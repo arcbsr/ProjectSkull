@@ -1,0 +1,16 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: "$rootDir/common.gradle"
+
+android {
+    namespace 'com.hope.projectskull'
+
+    defaultConfig {
+        applicationId "com.hope.projectskull"
+    }
+}
+dependencies {
+}
