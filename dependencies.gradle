@@ -43,6 +43,7 @@ ext {
             espresso_core                 : "androidx.test.espresso:espresso-core:3.6.1",
             compose_ui_test_junit4        : "androidx.compose.ui:ui-test-junit4",
             compose_ui_tooling            : "androidx.compose.ui:ui-tooling",
-            compose_ui_test_manifest      : "androidx.compose.ui:ui-test-manifest"
+            compose_ui_test_manifest      : "androidx.compose.ui:ui-test-manifest",
+            lib_resources : ':resources'
     ]
 }

@@ -37,6 +37,7 @@ android {
 
     buildFeatures {
         compose true
+        dataBinding true
     }
 
     composeOptions {
@@ -45,6 +46,16 @@ android {
 
     packagingOptions {
         resources.excludes += '/META-INF/{AL2.0,LGPL2.1}'
+    }
+    viewBinding {
+        enabled = true
+    }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src\\main\\res', 'src\\main\\res\\raw'
+            }
+        }
     }
 }
 
@@ -62,6 +73,8 @@ dependencies {
     implementation rootProject.ext.libs.compose_ui_graphics
     implementation rootProject.ext.libs.compose_ui_tooling_preview
     implementation rootProject.ext.libs.compose_material3
+//    implementation  rootProject.ext.libs.lib_resources
+
 
     testImplementation rootProject.ext.libs.junit
     androidTestImplementation rootProject.ext.libs.android_test_junit

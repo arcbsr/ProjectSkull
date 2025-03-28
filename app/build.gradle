@@ -13,4 +13,8 @@ android {
     }
 }
 dependencies {
+//    implementation  rootProject.ext.libs.lib_resources
+    implementation project(path: ':resources')
+    implementation project(path: ':lib_mvvm')
 }
+

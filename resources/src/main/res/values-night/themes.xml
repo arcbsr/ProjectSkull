@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">-->
+<!--        &lt;!&ndash; Primary brand color &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>-->
+<!--        <item name="colorOnPrimary">@color/colorOnPrimary</item>-->
+
+<!--        &lt;!&ndash; Secondary brand color &ndash;&gt;-->
+<!--        <item name="colorSecondary">@color/colorSecondary</item>-->
+<!--        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>-->
+<!--        <item name="colorOnSecondary">@color/colorOnSecondary</item>-->
+<!--        &lt;!&ndash; Background and Surface &ndash;&gt;-->
+<!--        <item name="android:statusBarColor">@color/colorPrimary</item>-->
+<!--        <item name="android:navigationBarColor">@color/colorPrimary</item>-->
+
+<!--        &lt;!&ndash; Background and surface colors &ndash;&gt;-->
+<!--        <item name="backgroundColor">@color/colorBackgroundNight</item>-->
+<!--        <item name="colorSurface">@color/colorSurfaceNight</item>-->
+<!--        <item name="colorOnBackground">@color/colorOnBackgroundNight</item>-->
+<!--        <item name="colorOnSurface">@color/colorOnSurfaceNight</item>-->
+<!--    </style>-->
+
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary Colors -->
+        <item name="colorPrimary">@color/dark_primary</item>
+        <item name="colorPrimaryVariant">@color/dark_primary_variant</item>
+        <item name="colorSecondary">@color/dark_secondary</item>
+
+        <!-- Background and Surface -->
+        <item name="android:windowBackground">@color/dark_background</item>
+<!--        <item name="colorBackground">@color/dark_background</item>-->
+        <item name="colorSurface">@color/dark_surface</item>
+
+        <!-- Text Colors -->
+        <item name="android:textColorPrimary">@color/dark_on_primary</item>
+        <item name="android:textColorSecondary">@color/dark_on_secondary</item>
+        <item name="android:textColor">@color/dark_on_background</item>
+
+        <!-- Status Bar & System UI -->
+        <item name="android:statusBarColor">@color/dark_primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+</resources>

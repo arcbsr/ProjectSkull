@@ -1,46 +1,29 @@
 package com.hope.projectskull
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.hope.projectskull.ui.theme.ProjectSkullTheme
+import com.hope.projectskull.databinding.LayoutMainactivityBinding
+import com.hope.projectskull.mvvm.base.activity.BaseVmDbActivity
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ProjectSkullTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
-        }
+class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>() {
+
+
+    override fun initViews() {
+
+        // Use FragmentTransaction to load MainFragment
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+
+        // Add the fragment to the container (replace if already exists)
+        fragmentTransaction.replace(R.id.fragment_container, MainFragment())
+
+        // Commit the transaction
+        fragmentTransaction.commit()
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    override fun showLoading(message: String) {
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ProjectSkullTheme {
-        Greeting("Android")
     }
+
+    override fun dismissLoading() {
+
+    }
+
 }

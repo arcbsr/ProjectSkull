@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.ProjectSkull" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary Colors -->
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryVariant">@color/light_primary_variant</item>
+        <item name="colorSecondary">@color/light_secondary</item>
+
+        <!-- Background and Surface -->
+        <item name="android:windowBackground">@color/light_background</item>
+<!--        <item name="colorBackground">@color/light_background</item>-->
+        <item name="colorSurface">@color/light_surface</item>
+
+        <!-- Text Colors -->
+        <item name="android:textColorPrimary">@color/light_on_primary</item>
+        <item name="android:textColorSecondary">@color/light_on_secondary</item>
+        <item name="android:textColor">@color/light_on_background</item>
+
+        <!-- Status Bar & System UI -->
+        <item name="android:statusBarColor">@color/light_primary</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
