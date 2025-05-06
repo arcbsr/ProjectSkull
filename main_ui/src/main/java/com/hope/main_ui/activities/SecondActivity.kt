@@ -1,4 +1,4 @@
-package com.hope.main_ui
+package com.hope.main_ui.activities
 
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.hope.lib_mvvm.MainViewModel

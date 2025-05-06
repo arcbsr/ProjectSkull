@@ -1,4 +1,4 @@
-package com.hope.main_ui
+package com.hope.main_ui.activities
 
 import android.util.Log
 import com.alibaba.android.arouter.facade.Postcard
@@ -7,6 +7,8 @@ import com.alibaba.android.arouter.facade.callback.NavCallback
 import com.alibaba.android.arouter.launcher.ARouter
 import com.hope.lib_mvvm.MainViewModel
 import com.hope.lib_mvvm.activity.BaseVmDbActivity
+import com.hope.main_ui.fragments.MainFragment
+import com.hope.main_ui.R
 import com.hope.main_ui.databinding.LayoutMainactivityBinding
 
 @Route(path = "/test/activity")
