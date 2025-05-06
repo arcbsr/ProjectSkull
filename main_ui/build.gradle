@@ -1,0 +1,24 @@
+apply from: "$rootDir/common.gradle"
+apply plugin: 'kotlin-kapt'
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName().toLowerCase())
+    }
+}
+android {
+    namespace 'com.hope.main_ui'
+
+    defaultConfig {
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName().toLowerCase()]
+            }
+        }
+    }
+}
+dependencies {
+    implementation project(path: rootProject.ext.libs.lib_mvvm)
+    implementation project(path: rootProject.ext.libs.resorces)
+    implementation rootProject.ext.libs.arouter
+    kapt rootProject.ext.libs.arouter_compiler
+}

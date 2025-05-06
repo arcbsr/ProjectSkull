@@ -15,5 +15,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "ProjectSkull"
 include ':app'
-include ':resources'
+include ':main_ui'
 include ':lib_mvvm'
+include ':resources'

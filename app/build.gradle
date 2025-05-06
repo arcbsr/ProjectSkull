@@ -4,17 +4,15 @@ plugins {
 }
 
 apply from: "$rootDir/common.gradle"
-
 android {
     namespace 'com.hope.projectskull'
 
     defaultConfig {
         applicationId "com.hope.projectskull"
+
     }
 }
 dependencies {
-//    implementation  rootProject.ext.libs.lib_resources
-    implementation project(path: ':resources')
-    implementation project(path: ':lib_mvvm')
+    implementation project(path: rootProject.ext.libs.main_ui)
 }
 

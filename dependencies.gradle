@@ -6,7 +6,7 @@ ext {
     retrofit_version = '2.9.0'
     gson_version = '2.8.8'
     composeCompilerVersion = '1.4.3'
-    kotlinJvmTarget = '1.8'
+    kotlinJvmTarget = '17'
 
     androidExt = [
             supportLibraryVersion : "28.0.0",
@@ -16,11 +16,11 @@ ext {
             targetSdkVersion      : 34,
             versionCode           : 1,
             versionName           : "0.0.1",
-            sdkSourceCompatibility: JavaVersion.VERSION_1_8,
-            sdkTargetCompatibility: JavaVersion.VERSION_1_8,
+            sdkSourceCompatibility: JavaVersion.VERSION_17,
+            sdkTargetCompatibility: JavaVersion.VERSION_17,
             appSourceCompatibility: JavaVersion.VERSION_1_8,
             appTargetCompatibility: JavaVersion.VERSION_1_8,
-            kotlinJvmTarget       : "1.8",
+            kotlinJvmTarget       : "17",
             composeCompilerVersion: "1.4.3"
     ]
 
@@ -44,6 +44,11 @@ ext {
             compose_ui_test_junit4        : "androidx.compose.ui:ui-test-junit4",
             compose_ui_tooling            : "androidx.compose.ui:ui-tooling",
             compose_ui_test_manifest      : "androidx.compose.ui:ui-test-manifest",
-            lib_resources : ':resources'
+            lib_resources : ':resources',
+            main_ui : ':main_ui',
+            lib_mvvm : ':lib_mvvm',
+            resorces : ':resources',
+            arouter                        : "com.alibaba:arouter-api:1.5.2",
+            arouter_compiler               : "com.alibaba:arouter-compiler:1.5.2",
     ]
 }
