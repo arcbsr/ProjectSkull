@@ -1,0 +1,10 @@
+apply from: "$rootDir/common.gradle"
+
+android {
+    namespace 'com.hope.common'
+
+    defaultConfig {
+    }
+}
+dependencies {
+}

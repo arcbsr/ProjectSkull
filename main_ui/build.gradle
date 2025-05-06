@@ -19,6 +19,7 @@ android {
 dependencies {
     implementation project(path: rootProject.ext.libs.lib_mvvm)
     implementation project(path: rootProject.ext.libs.resorces)
+    implementation project(path: rootProject.ext.libs.common)
     implementation rootProject.ext.libs.arouter
     kapt rootProject.ext.libs.arouter_compiler
 }

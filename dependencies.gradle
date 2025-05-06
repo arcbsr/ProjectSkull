@@ -48,6 +48,7 @@ ext {
             main_ui : ':main_ui',
             lib_mvvm : ':lib_mvvm',
             resorces : ':resources',
+            common : ':common',
             arouter                        : "com.alibaba:arouter-api:1.5.2",
             arouter_compiler               : "com.alibaba:arouter-compiler:1.5.2",
     ]

@@ -12,7 +12,7 @@ class MainViewModel : BaseViewModel() {
         loadingChange.showDialog.postValue("Loading, please wait...")
 
         // After some time, dismiss dialog
-        Thread.sleep(5000)  // Simulate delay (you'd replace this with real async code)
+        Thread.sleep(2000)  // Simulate delay (you'd replace this with real async code)
         loadingChange.dismissDialog.postValue(true)
     }
 }
