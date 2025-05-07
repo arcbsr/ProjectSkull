@@ -5,6 +5,8 @@ if (project.plugins.hasPlugin("com.android.application")) {
 } else {
     apply plugin: 'com.android.library'
 }
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdk rootProject.ext.androidExt.compileSdkVersion
@@ -75,6 +77,12 @@ dependencies {
     implementation rootProject.ext.libs.compose_material3
     implementation rootProject.ext.libs.base_recyclerview_adapter_helper
     implementation rootProject.ext.libs.circleimageview
+
+    implementation rootProject.ext.libs.hilt
+    kapt rootProject.ext.libs.hilt_kapt
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 // https://github.com/drakeet/MultiType for multi adapter
 
     testImplementation rootProject.ext.libs.junit

@@ -3,8 +3,9 @@ import android.app.Application
 import android.util.Log
 import com.alibaba.android.arouter.BuildConfig
 import com.alibaba.android.arouter.launcher.ARouter
+import dagger.hilt.android.HiltAndroidApp
 
-class MyApplication : Application() {
+open class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {

@@ -9,7 +9,7 @@ import java.lang.reflect.ParameterizedType
 
 abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
 
-    private lateinit var viewModel: VM
+    protected lateinit var viewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

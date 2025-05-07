@@ -3,25 +3,29 @@ package com.hope.main_ui.activities
 import android.util.Log
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.android.arouter.launcher.ARouter
-import com.hope.common.router.RoutePath
 import com.hope.lib_mvvm.MainViewModel
 import com.hope.lib_mvvm.activity.BaseVmDbActivity
 import com.hope.main_ui.R
 import com.hope.main_ui.adapters.ViewPagerAdapter
 import com.hope.main_ui.databinding.LayoutMainactivityBinding
-import com.hope.main_ui.dialogs.InviteUserDialog
-import com.lxj.xpopup.XPopup
-import com.lxj.xpopup.core.BasePopupView
-import com.lxj.xpopup.interfaces.SimpleCallback
+import com.hope.main_ui.viewmodels.MovieState
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
+@AndroidEntryPoint
 @Route(path = "/test/activity")
 class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>() {
+    //    private val viewModel2: MovieListViewModel by viewModels()
+    override fun initObservers() {
+
+    }
+
     private lateinit var tabLayouts: List<LinearLayout>
     private lateinit var tabIcons: List<AppCompatImageView>
     private lateinit var tabTexts: List<TextView>
@@ -102,16 +106,18 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
         setGreetingMessage()
         mDatabind.tvMainHello.setOnClickListener {
 //            ARouter.getInstance().build(RoutePath.Home.HOME).navigation(this)
-            XPopup.Builder(this)
-                .hasShadowBg(true) // Removes background dimming
-                .dismissOnTouchOutside(true) // So it doesn't close on outside tap
-                .isClickThrough(false) // Allows clicks to go through to background views
-                .isDestroyOnDismiss(true)
-                .asCustom(InviteUserDialog(this))
-                .show()
+//            XPopup.Builder(this)
+//                .hasShadowBg(true) // Removes background dimming
+//                .dismissOnTouchOutside(true) // So it doesn't close on outside tap
+//                .isClickThrough(false) // Allows clicks to go through to background views
+//                .isDestroyOnDismiss(true)
+//                .asCustom(InviteUserDialog(this))
+//                .show()
+
         }
         setupTabs()
     }
+
     private fun setGreetingMessage() {
 
         val calendar = Calendar.getInstance()

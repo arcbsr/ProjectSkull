@@ -1,28 +1,25 @@
 package com.hope.main_ui.fragments
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
-import androidx.databinding.DataBindingUtil
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
-import com.hope.lib_mvvm.MainViewModel
 import com.hope.lib_mvvm.fragment.BaseFragment
 import com.hope.main_ui.R
-import com.hope.main_ui.adapters.User
-import com.hope.main_ui.adapters.UserAdapter
+import com.hope.main_ui.adapters.MovieAdapter
 import com.hope.main_ui.databinding.LayoutMainfragmentBinding
-import com.hope.main_ui.databinding.TabBarLayoutBinding
+import com.hope.main_ui.viewmodels.MovieListViewModel
+import com.hope.main_ui.viewmodels.MovieState
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainFragment : BaseFragment<MainViewModel, LayoutMainfragmentBinding>() {
-    private val demoUsers = listOf(
-        User("Alice Johnson", "alice@example.com"),
-        User("Bob Smith", "bob.smith@gmail.com"),
-        User("Carol Lee", "carol.lee@yahoo.com"),
-        User("David Kim", "davidk@domain.com"),
-        User("Eva Green", "eva.green@mail.com")
-    )
-    private val adapter = UserAdapter()
+@AndroidEntryPoint
+class MainFragment(private val searchQuery: String) :
+    BaseFragment<MovieListViewModel, LayoutMainfragmentBinding>() {
+    private val adapter = MovieAdapter()
     override fun showLoading(message: String) {
         mDatabind.textView.text = message
     }
@@ -43,13 +40,43 @@ class MainFragment : BaseFragment<MainViewModel, LayoutMainfragmentBinding>() {
         val headView: View = LayoutInflater.from(context).inflate(R.layout.tab_bar_layout, null)
 
         mDatabind.recyclerView.adapter = adapter
-        adapter.setNewInstance(demoUsers.toMutableList())
 //        adapter.addFooterView(headView,-1, LinearLayout.VERTICAL)
+        val footerView = View(context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                resources.getDimensionPixelSize(com.hope.resources.R.dimen.dp_80)
+            )
+        }
+        adapter.addFooterView(footerView)
 
+
+        viewModel.fetchMovieList(searchQuery)
     }
 
     override fun initObservers() {
-//        viewModel.simulateLoadingProcess()
+        lifecycleScope.launchWhenStarted {
+            viewModel.mState.collect { state ->
+                when (state) {
+                    is MovieState.Loading -> {
+                        // Show loading UI
+                    }
 
+                    is MovieState.Success -> {
+                        val movies = state.movies
+                        Log.w("Rafiur>>", movies.toString())
+                        adapter.setNewInstance(movies.toMutableList())
+                    }
+
+                    is MovieState.Error -> {
+                        // Show error message
+                        Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
+                    }
+
+                    is MovieState.EndOfSearch -> {
+                        // No more data
+                    }
+                }
+            }
+        }
     }
 }

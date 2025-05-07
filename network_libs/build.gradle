@@ -1,0 +1,14 @@
+apply from: "$rootDir/common.gradle"
+android {
+    namespace 'com.hope.network_libs'
+
+    defaultConfig {
+        android.buildFeatures.buildConfig true
+        buildConfigField("String", "API_KEY", "\"${project.property("apikey")}\"")
+        buildConfigField("String", "API_URL", "\"https://www.omdbapi.com/\"")
+    }
+}
+
+dependencies {
+    implementation project(path: rootProject.ext.libs.model_omdb)
+}
