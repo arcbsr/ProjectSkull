@@ -21,7 +21,7 @@ class SecondActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding
 //
 //        // Commit the transaction
 //        fragmentTransaction.commit()
-        mDatabind.tvMain.text = "SecondActivity"
+        mDatabind.tvMainHello.text = "SecondActivity"
     }
 
     override fun showLoading(message: String) {

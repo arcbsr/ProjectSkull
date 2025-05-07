@@ -23,16 +23,19 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/tv_main"
+                android:id="@+id/tv_main_hello"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="sdfsdfsdfsd" />
+                style="@style/TextViewTitle"
+                android:textSize="@dimen/sp_18"
+                android:text="Hello, Good Morning..." />
 
-            <FrameLayout
-                android:id="@+id/fragment_container"
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_marginTop="@dimen/dp_14"
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/tv_main" />
+                android:layout_below="@id/tv_main_hello" />
 
             <include
                 layout="@layout/tab_bar_layout"
