@@ -4,6 +4,7 @@
     android:layout_height="80dp"
     android:background="@drawable/tabbar_background"
     android:elevation="@dimen/dp_8"
+    android:layout_gravity="bottom"
     android:orientation="horizontal"
     android:padding="@dimen/dp_8"
     android:weightSum="4">

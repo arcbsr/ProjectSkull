@@ -14,6 +14,10 @@ import com.hope.lib_mvvm.activity.BaseVmDbActivity
 import com.hope.main_ui.R
 import com.hope.main_ui.adapters.ViewPagerAdapter
 import com.hope.main_ui.databinding.LayoutMainactivityBinding
+import com.hope.main_ui.dialogs.InviteUserDialog
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.lxj.xpopup.interfaces.SimpleCallback
 import java.util.Calendar
 
 @Route(path = "/test/activity")
@@ -97,15 +101,20 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
         mDatabind.viewPager.adapter = ViewPagerAdapter(this, titles)
         setGreetingMessage()
         mDatabind.tvMainHello.setOnClickListener {
-//            ARouter.getInstance().build("/test/secactivity").navigation()
-            ARouter.getInstance().build(RoutePath.Home.HOME).navigation(this)
-
+//            ARouter.getInstance().build(RoutePath.Home.HOME).navigation(this)
+            XPopup.Builder(this)
+                .hasShadowBg(true) // Removes background dimming
+                .dismissOnTouchOutside(true) // So it doesn't close on outside tap
+                .isClickThrough(false) // Allows clicks to go through to background views
+                .isDestroyOnDismiss(true)
+                .asCustom(InviteUserDialog(this))
+                .show()
         }
         setupTabs()
     }
     private fun setGreetingMessage() {
-        val calendar = Calendar.getInstance()
 
+        val calendar = Calendar.getInstance()
         val greeting = when (calendar.get(Calendar.HOUR_OF_DAY)) {
             in 0..4 -> "Good Night \uD83C\uDF19"
             in 5..11 -> "Good Morning \u2600️"

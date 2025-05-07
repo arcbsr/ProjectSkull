@@ -45,6 +45,7 @@ ext {
             compose_ui_tooling              : "androidx.compose.ui:ui-tooling",
             compose_ui_test_manifest        : "androidx.compose.ui:ui-test-manifest",
             base_recyclerview_adapter_helper: "io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14",
+            xpopup                          : "com.github.li-xiaojun:XPopup:2.10.0",
             lib_resources                   : ':resources',
             main_ui                         : ':main_ui',
             lib_mvvm                        : ':lib_mvvm',
@@ -52,6 +53,6 @@ ext {
             common                          : ':common',
             arouter                         : "com.alibaba:arouter-api:1.5.2",
             arouter_compiler                : "com.alibaba:arouter-compiler:1.5.2",
-            circleimageview                : "de.hdodenhof:circleimageview:3.1.0",
+            circleimageview                 : "de.hdodenhof:circleimageview:3.1.0",
     ]
 }
