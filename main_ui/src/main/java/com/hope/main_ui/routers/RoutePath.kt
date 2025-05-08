@@ -1,4 +1,4 @@
-package com.hope.common.router
+package com.hope.main_ui.routers
 
 object RoutePath {
     object Profile {
@@ -7,5 +7,9 @@ object RoutePath {
 
     object Home {
         const val HOME = "/home/home"
+    }
+
+    object HomeFragment {
+        const val HOME = "/fragment/home"
     }
 }

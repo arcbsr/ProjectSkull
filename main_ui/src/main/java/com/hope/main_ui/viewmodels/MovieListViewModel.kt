@@ -4,7 +4,7 @@ package com.hope.main_ui.viewmodels
 import androidx.lifecycle.viewModelScope
 import com.hope.lib_mvvm.viewmodel.BaseViewModel
 import com.hope.network_libs.datawrapper.ResponseWrapper
-import com.hope.model_omdb.models.Movie
+import com.hope.models.models.Movie
 import com.hope.network_libs.domain_omdb.usecase.UseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

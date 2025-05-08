@@ -3,7 +3,7 @@ package com.hope.main_ui.activities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.hope.common.router.RoutePath
+import com.hope.main_ui.routers.RoutePath
 import com.hope.main_ui.R
 
 

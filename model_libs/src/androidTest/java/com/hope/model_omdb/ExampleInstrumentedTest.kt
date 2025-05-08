@@ -1,4 +1,4 @@
-package com.hope.model_omdb
+package com.hope.models
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

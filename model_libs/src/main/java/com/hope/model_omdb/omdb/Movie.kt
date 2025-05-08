@@ -1,4 +1,4 @@
-package com.hope.model_omdb.models
+package com.hope.models.models
 
 import com.google.gson.annotations.SerializedName
 

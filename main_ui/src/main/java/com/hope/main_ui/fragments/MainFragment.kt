@@ -9,7 +9,10 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.alibaba.android.arouter.facade.annotation.Autowired
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.hope.main_ui.routers.RoutePath
 import com.hope.lib_mvvm.fragment.BaseFragment
 import com.hope.main_ui.R
 import com.hope.main_ui.adapters.MovieAdapter
@@ -18,10 +21,14 @@ import com.hope.main_ui.viewmodels.MovieListViewModel
 import com.hope.main_ui.viewmodels.MovieState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
+@Route(path = RoutePath.HomeFragment.HOME)
 @AndroidEntryPoint
-class MainFragment(private val searchQuery: String) :
+class MainFragment() :
     BaseFragment<MovieListViewModel, LayoutMainfragmentBinding>() {
+
+    @Autowired(name = "searchQuery")
+    @JvmField
+    var searchQuery: String? = null
     private val adapter = MovieAdapter()
     override fun showLoading(message: String) {
         mDatabind.textView.text = message
@@ -31,6 +38,7 @@ class MainFragment(private val searchQuery: String) :
     }
 
     override fun initViews() {
+        ARouter.getInstance().inject(this)
         // Set initial UI state
         mDatabind.textView.text = "Welcome to MainFragment!"
         mDatabind.textView.setOnClickListener {
@@ -53,7 +61,7 @@ class MainFragment(private val searchQuery: String) :
         adapter.addFooterView(footerView)
 
 
-        viewModel.fetchMovieList(searchQuery)
+        searchQuery?.let { viewModel.fetchMovieList(it) }
     }
 
     override fun initObservers() {

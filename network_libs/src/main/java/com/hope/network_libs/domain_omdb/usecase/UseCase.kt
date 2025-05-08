@@ -1,8 +1,8 @@
 package com.hope.network_libs.domain_omdb.usecase
 
 import com.hope.network_libs.datawrapper.ResponseWrapper
-import com.hope.model_omdb.models.MovieDetailsResponse
-import com.hope.model_omdb.models.SearchResponseData
+import com.hope.models.models.MovieDetailsResponse
+import com.hope.models.models.SearchResponseData
 import com.hope.network_libs.domain_omdb.repository.Repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

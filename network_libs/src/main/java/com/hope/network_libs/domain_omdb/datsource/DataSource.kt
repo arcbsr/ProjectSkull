@@ -1,17 +1,13 @@
 package com.hope.network_libs.domain_omdb.datsource
 
-import com.hope.model_omdb.models.MovieDetailsResponse
-import com.hope.model_omdb.models.SearchResponseData
+import com.hope.models.models.MovieDetailsResponse
+import com.hope.models.models.SearchResponseData
 import com.hope.network_libs.BaseDataSource
 import com.hope.network_libs.BuildConfig
 import com.hope.network_libs.datawrapper.ResponseWrapper
 import com.hope.network_libs.domain_omdb.di.IoDispatcher
 import com.hope.network_libs.domain_omdb.remote.ApiService
-import com.hope.network_libs.exception.NoConnectivityException
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 class DataSource @Inject constructor(

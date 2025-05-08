@@ -1,7 +1,7 @@
 package com.hope.network_libs.domain_omdb.remote
 
-import com.hope.model_omdb.models.MovieDetailsResponse
-import com.hope.model_omdb.models.SearchResponseData
+import com.hope.models.models.MovieDetailsResponse
+import com.hope.models.models.SearchResponseData
 import retrofit2.http.GET
 import retrofit2.http.Query
 

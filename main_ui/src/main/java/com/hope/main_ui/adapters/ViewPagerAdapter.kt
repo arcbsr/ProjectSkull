@@ -3,9 +3,11 @@ package com.hope.main_ui.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.hope.main_ui.fragments.MainFragment
+import com.alibaba.android.arouter.launcher.ARouter
+import com.hope.main_ui.routers.RoutePath
+import com.hope.main_ui.routers.RouterUtils
 
-class ViewPagerAdapter (
+class ViewPagerAdapter(
     fragmentActivity: FragmentActivity,
     private val titles: List<String>
 ) : FragmentStateAdapter(fragmentActivity) {
@@ -15,6 +17,7 @@ class ViewPagerAdapter (
     override fun createFragment(position: Int): Fragment {
         val searchQuery = arrayOf("Love", "Life", "Song", "Action")
 
-        return MainFragment(searchQuery[position])
+//        return MainFragment(searchQuery[position])
+        return RouterUtils().navigateToHomeFragment(query = searchQuery[position])
     }
 }

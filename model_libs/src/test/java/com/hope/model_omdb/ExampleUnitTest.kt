@@ -1,4 +1,4 @@
-package com.hope.model_omdb
+package com.hope.models
 
 import org.junit.Test
 

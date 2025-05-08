@@ -7,7 +7,7 @@ import com.hope.lib_mvvm.adapter.BaseViewBindingAdapter
 import com.hope.lib_mvvm.adapter.BaseViewBindingHolder
 import com.hope.main_ui.R
 import com.hope.main_ui.databinding.ItemUserBinding
-import com.hope.model_omdb.models.Movie
+import com.hope.models.models.Movie
 
 data class User(val name: String, val email: String)
 

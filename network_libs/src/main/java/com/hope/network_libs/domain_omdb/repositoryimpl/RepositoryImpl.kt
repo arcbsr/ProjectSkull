@@ -2,8 +2,8 @@ package com.hope.network_libs.domain_omdb.repositoryimpl
 
 
 import com.hope.network_libs.datawrapper.ResponseWrapper
-import com.hope.model_omdb.models.MovieDetailsResponse
-import com.hope.model_omdb.models.SearchResponseData
+import com.hope.models.models.MovieDetailsResponse
+import com.hope.models.models.SearchResponseData
 import com.hope.network_libs.domain_omdb.repository.Repository
 import com.hope.network_libs.domain_omdb.datsource.DataSource
 import kotlinx.coroutines.flow.Flow
