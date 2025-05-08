@@ -13,7 +13,7 @@ class ViewPagerAdapter (
     override fun getItemCount(): Int = titles.size
 
     override fun createFragment(position: Int): Fragment {
-    val searchQuery = arrayOf("Love", "Life", "Song", "Action")
+        val searchQuery = arrayOf("Love", "Life", "Song", "Action")
 
         return MainFragment(searchQuery[position])
     }

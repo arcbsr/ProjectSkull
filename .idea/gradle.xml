@@ -15,7 +15,7 @@
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/lib_mvvm" />
             <option value="$PROJECT_DIR$/main_ui" />
-            <option value="$PROJECT_DIR$/model_omdb" />
+            <option value="$PROJECT_DIR$/model_libs" />
             <option value="$PROJECT_DIR$/network_libs" />
             <option value="$PROJECT_DIR$/resources" />
           </set>

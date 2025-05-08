@@ -1,7 +1,7 @@
 apply from: "$rootDir/common.gradle"
 
 android {
-    namespace 'com.hope.model_omdb'
+    namespace 'com.hope.model_libs'
 
     defaultConfig {
     }

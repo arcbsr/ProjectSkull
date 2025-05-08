@@ -39,7 +39,7 @@ class MovieListViewModel @Inject constructor(private val useCase: UseCase) :  Ba
         viewModelScope.launch {
             useCase.getMovies(searchTxt, page = 1, _year.value.toString()).onStart {}.catch {
                 _state.value = MovieState.Error("Unknown")
-            }.collect { it ->
+            }.collect {
                 when (it) {
                     is ResponseWrapper.GenericError -> {
                         it.error?.let { msg ->
@@ -73,10 +73,10 @@ class MovieListViewModel @Inject constructor(private val useCase: UseCase) :  Ba
 
             useCase.getMovieDetail("tt1570728").onStart {}.catch {
 
-            }.collect { it ->
+            }.collect {
                 when (it) {
                     is ResponseWrapper.GenericError -> {
-                        it.error?.let { msg ->
+                        it.error?.let {
 
                         }
                     }

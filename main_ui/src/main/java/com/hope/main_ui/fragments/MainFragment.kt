@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.alibaba.android.arouter.launcher.ARouter
 import com.hope.lib_mvvm.fragment.BaseFragment
 import com.hope.main_ui.R
@@ -15,6 +17,7 @@ import com.hope.main_ui.databinding.LayoutMainfragmentBinding
 import com.hope.main_ui.viewmodels.MovieListViewModel
 import com.hope.main_ui.viewmodels.MovieState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainFragment(private val searchQuery: String) :
@@ -54,29 +57,27 @@ class MainFragment(private val searchQuery: String) :
     }
 
     override fun initObservers() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.mState.collect { state ->
-                when (state) {
-                    is MovieState.Loading -> {
-                        // Show loading UI
-                    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.mState.collect { state ->
+                    when (state) {
+                        is MovieState.Loading -> {
+                            Log.d("Rafiur>>>", "Loading...")
+                        }
+                        is MovieState.Success -> {
+                            adapter.setList(state.movies)
+                        }
+                        is MovieState.Error -> {
+                            Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
+                        }
+                        is MovieState.EndOfSearch -> {
+                            Log.d("Rafiur>>>", "End of search")
 
-                    is MovieState.Success -> {
-                        val movies = state.movies
-                        Log.w("Rafiur>>", movies.toString())
-                        adapter.setNewInstance(movies.toMutableList())
-                    }
-
-                    is MovieState.Error -> {
-                        // Show error message
-                        Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
-                    }
-
-                    is MovieState.EndOfSearch -> {
-                        // No more data
+                        }
                     }
                 }
             }
         }
+
     }
 }

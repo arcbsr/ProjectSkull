@@ -20,7 +20,7 @@ dependencies {
     implementation project(path: rootProject.ext.libs.resorces)
     implementation project(path: rootProject.ext.libs.common)
     implementation project(path: rootProject.ext.libs.network_libs)
-    implementation project(path: rootProject.ext.libs.model_omdb)
+    implementation project(path: rootProject.ext.libs.model_libs)
     implementation rootProject.ext.libs.xpopup
     implementation rootProject.ext.libs.arouter
     kapt rootProject.ext.libs.arouter_compiler
