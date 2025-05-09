@@ -73,7 +73,7 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
             imageView.setColorFilter(
                 ContextCompat.getColor(
                     this,
-                    if (index == selectedIndex) R.color.red else R.color.gray
+                    if (index == selectedIndex) com.hope.resources.R.color.red else com.hope.resources.R.color.gray
                 )
             )
         }
@@ -82,7 +82,7 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
             textView.setTextColor(
                 ContextCompat.getColor(
                     this,
-                    if (index == selectedIndex) R.color.red else R.color.gray
+                    if (index == selectedIndex) com.hope.resources.R.color.red else com.hope.resources.R.color.gray
                 )
             )
         }

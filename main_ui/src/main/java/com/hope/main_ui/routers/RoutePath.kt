@@ -11,5 +11,6 @@ object RoutePath {
 
     object HomeFragment {
         const val HOME = "/fragment/home"
+        const val SETTINGS = "/fragment/settings"
     }
 }

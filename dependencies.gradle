@@ -46,6 +46,13 @@ ext {
             xpopup                          : "com.github.li-xiaojun:XPopup:2.10.0",
             hilt                            : "com.google.dagger:hilt-android:2.48",
             hilt_kapt                       : "com.google.dagger:hilt-android-compiler:2.48",
+
+            permissionUtils                 : ('com.github.ly-android:PermissionUtils:1.0.3'),
+            refresh_layout_kernel           : ('com.scwang.smart:refresh-layout-kernel:2.0.3'),
+            refresh_header_material         : ('com.scwang.smart:refresh-header-material:2.0.3'),
+            refresh_footer_classics         : ('com.scwang.smart:refresh-footer-classics:2.0.3'),
+            refresh_layout_horizontal       : ('com.scwang.smart:refresh-layout-horizontal:2.0.0'),
+
             lib_resources                   : ':resources',
             main_ui                         : ':main_ui',
             lib_mvvm                        : ':lib_mvvm',

@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 @Route(path = RoutePath.HomeFragment.HOME)
 @AndroidEntryPoint
-class MainFragment() :
+class MainFragment :
     BaseFragment<MovieListViewModel, LayoutMainfragmentBinding>() {
 
     @Autowired(name = "searchQuery")
