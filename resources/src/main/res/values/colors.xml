@@ -90,4 +90,7 @@
     <color name="gray_20">#33808080</color>
     <color name="orange_20">#33FFA500</color>
     <color name="purple_20">#33800080</color>
+
+    <!--    common colors  -->
+    <color name="bg_light_gray">#F5F5F5</color> <!-- Light neutral gray -->
 </resources>

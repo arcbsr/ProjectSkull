@@ -2,51 +2,123 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <!--    <data>-->
-    <!--        <variable-->
-    <!--            name="viewModel"-->
-    <!--            type="com.hope.projectskull.MainViewModel" />-->
-    <!--    </data>-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:padding="8dp"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_user" />
-
-        <RelativeLayout
-            android:id="@+id/rl_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginHorizontal="20dp"
-            android:padding="10dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <!-- Image Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/image_card"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_16"
+            app:cardCornerRadius="@dimen/dp_60"
+            app:cardElevation="@dimen/dp_6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello World!"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dp_14" />
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageview_d"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Image Preview"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/im_placeholder" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/btn_pick_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/white_60"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Select"
+                    android:textColor="@color/orange"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+        <!-- Separator Line -->
+        <View
+            android:id="@+id/separator_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@color/gray_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_card" />
+
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:padding="@dimen/dp_8"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/chat_input_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/separator_line"
+            tools:itemCount="6"
+            tools:listitem="@layout/item_image" />
+
+
+        <!-- Input Area -->
+        <LinearLayout
+            android:id="@+id/chat_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_48"
+            android:layout_marginTop="@dimen/dp_8"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.hope.resources.shape.RoundImageView
+                android:id="@+id/chat_bubble_icon"
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_48"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_4"
+                android:src="@drawable/im_placeholder"
+                app:rv_radius="@dimen/dp_66" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/chat_input_background">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_message"
+                    style="@style/TextViewTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/btn_send"
+                    android:background="@android:color/transparent"
+                    android:hint="Type a message..."
+                    android:paddingStart="@dimen/dp_12"
+                    android:textColor="@android:color/black" />
+
+                <ImageButton
+                    android:id="@+id/btn_send"
+                    android:layout_width="@dimen/dp_56"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/send_button_background"
+                    android:contentDescription="Send"
+                    android:src="@drawable/ic_send"
+                    app:tint="@color/black" />
+            </RelativeLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

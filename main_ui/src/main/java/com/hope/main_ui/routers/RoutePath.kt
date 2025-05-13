@@ -11,6 +11,8 @@ object RoutePath {
 
     object HomeFragment {
         const val HOME = "/fragment/home"
+        const val PREVOUS_CHAT = "/fragment/home_previous_chat"
+        const val HISTORY = "/fragment/history"
         const val SETTINGS = "/fragment/settings"
     }
 }

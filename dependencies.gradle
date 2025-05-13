@@ -47,11 +47,12 @@ ext {
             hilt                            : "com.google.dagger:hilt-android:2.48",
             hilt_kapt                       : "com.google.dagger:hilt-android-compiler:2.48",
 
-            permissionUtils                 : ('com.github.ly-android:PermissionUtils:1.0.3'),
+            permissionUtils                 : "com.github.ly-android:PermissionUtils:1.0.3",
             refresh_layout_kernel           : ('com.scwang.smart:refresh-layout-kernel:2.0.3'),
             refresh_header_material         : ('com.scwang.smart:refresh-header-material:2.0.3'),
             refresh_footer_classics         : ('com.scwang.smart:refresh-footer-classics:2.0.3'),
             refresh_layout_horizontal       : ('com.scwang.smart:refresh-layout-horizontal:2.0.0'),
+            nice_image_view                 : "com.github.SheHuan:NiceImageView:1.0.5",
 
             lib_resources                   : ':resources',
             main_ui                         : ':main_ui',
@@ -60,6 +61,7 @@ ext {
             model_libs                      : ':model_libs',
             network_libs                    : ':network_libs',
             common                          : ':common',
+            db_libs                          : ':db_libs',
             arouter                         : "com.alibaba:arouter-api:1.5.2",
             arouter_compiler                : "com.alibaba:arouter-compiler:1.5.2",
             circleimageview                 : "de.hdodenhof:circleimageview:3.1.0",

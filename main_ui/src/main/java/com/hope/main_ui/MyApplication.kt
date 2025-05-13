@@ -1,8 +1,8 @@
 package com.hope.main_ui
 import android.app.Application
-import android.util.Log
 import com.alibaba.android.arouter.BuildConfig
 import com.alibaba.android.arouter.launcher.ARouter
+import com.hope.common.log.Log
 import dagger.hilt.android.HiltAndroidApp
 
 open class MyApplication : Application() {

@@ -5,8 +5,8 @@ import com.hope.models.models.SearchResponseData
 import com.hope.network_libs.BaseDataSource
 import com.hope.network_libs.BuildConfig
 import com.hope.network_libs.datawrapper.ResponseWrapper
-import com.hope.network_libs.domain_omdb.di.IoDispatcher
 import com.hope.network_libs.domain_omdb.remote.ApiService
+import com.hope.network_libs.domain_omdb.remote.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
@@ -36,33 +36,5 @@ class DataSource @Inject constructor(
 
         }, ioDispatcher)
     }
-
-//    private suspend fun <T> safeApiCall(apiCall: suspend () -> T): ResponseWrapper<T> {
-//        return withContext(ioDispatcher) {
-//            try {
-//                val data = apiCall.invoke()
-//                ResponseWrapper.Success(data)
-//            } catch (throwable: Throwable) {
-//                when (throwable) {
-//                    is NoConnectivityException -> ResponseWrapper.NetworkError
-//                    is IOException -> ResponseWrapper.NetworkError
-//                    is HttpException -> {
-//                        val code = throwable.code()
-//                        val msg = throwable.message()
-//                        val errorMsg = if (msg.isNullOrEmpty()) {
-//                            throwable.response()?.errorBody()?.string()
-//                        } else {
-//                            msg
-//                        }
-//                        ResponseWrapper.GenericError(code, errorMsg)
-//                    }
-//
-//                    else -> {
-//                        ResponseWrapper.GenericError(0, throwable.message)
-//                    }
-//                }
-//            }
-//        }
-//    }
 
 }

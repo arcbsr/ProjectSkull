@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/db_libs" />
             <option value="$PROJECT_DIR$/lib_mvvm" />
             <option value="$PROJECT_DIR$/main_ui" />
             <option value="$PROJECT_DIR$/model_libs" />

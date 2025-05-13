@@ -1,20 +1,18 @@
 package com.hope.main_ui.activities
 
-import android.util.Log
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.hope.common.log.Log
+import com.hope.db_libs.dbmanager.DatabaseManager
 import com.hope.lib_mvvm.MainViewModel
 import com.hope.lib_mvvm.activity.BaseVmDbActivity
 import com.hope.main_ui.R
 import com.hope.main_ui.adapters.ViewPagerAdapter
 import com.hope.main_ui.databinding.LayoutMainactivityBinding
-import com.hope.main_ui.viewmodels.MovieState
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
@@ -90,6 +88,8 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
 
 
     override fun initViews() {
+
+        DatabaseManager.initialize(this)
         val titles = listOf("Home", "History", "Profile", "Settings")
 
         Log.w("Rafiur>>>", "MainActivity")

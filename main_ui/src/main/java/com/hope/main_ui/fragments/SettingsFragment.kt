@@ -15,7 +15,6 @@ class SettingsFragment :
 
 
     override fun showLoading(message: String) {
-        mDatabind.textView.text = message
     }
 
     override fun dismissLoading() {

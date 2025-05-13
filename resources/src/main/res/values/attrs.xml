@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundedImageView">
+        <attr name="corner_radius" format="dimension" />
+        <attr name="border_width1" format="dimension" />
+        <attr name="border_color1" format="color" />
+        <attr name="mutate_background" format="boolean" />
+        <attr name="oval" format="boolean" />
+        <attr name="android:scaleType" />
+    </declare-styleable>
+    <declare-styleable name="CountDownView">
+        <attr name="count_down_type" format="enum">
+            <enum name="registerWithEmail" value="0" />
+            <enum name="loginWithNumber" value="1" />
+            <enum name="loginWithEmail" value="2" />
+            <enum name="tryLater" value="3" />
+        </attr>
+    </declare-styleable>
+
+
+    <!-- 圆角矩形背景 -->
+    <attr name="rv_background" format="reference" />
+    <!-- 圆角矩形背景色 -->
+    <attr name="rv_backgroundColor" format="color" />
+    <!-- 圆角矩形背景色press -->
+    <attr name="rv_backgroundPressColor" format="color" />
+    <!-- 渐变开始背景色 -->
+    <attr name="rv_startColor" format="color" />
+    <!-- 渐变结束背景色 -->
+    <attr name="rv_endColor" format="color" />
+    <!-- 渐变背景色方向 -->
+    <attr name="rv_orientationr" format="integer" />
+    <!-- 圆角弧度,单位dp-->
+    <attr name="rv_cornerRadius" format="dimension" />
+    <!-- 圆角弧度,单位dp-->
+    <attr name="rv_strokeWidth" format="dimension" />
+    <!-- 圆角边框颜色-->
+    <attr name="rv_strokeColor" format="color" />
+    <!-- 圆角边框颜色press -->
+    <attr name="rv_strokePressColor" format="color" />
+    <!-- 文字颜色press-->
+    <attr name="rv_textPressColor" format="color" />
+    <!-- 圆角弧度是高度一半-->
+    <attr name="rv_isRadiusHalfHeight" format="boolean" />
+    <!-- 圆角矩形宽高相等,取较宽高中大值-->
+    <attr name="rv_isWidthHeightEqual" format="boolean" />
+    <!-- 圆角弧度,单位dp,TopLeft-->
+    <attr name="rv_cornerRadius_TL" format="dimension" />
+    <!-- 圆角弧度,单位dp,TopRight-->
+    <attr name="rv_cornerRadius_TR" format="dimension" />
+    <!-- 圆角弧度,单位dp,BottomLeft-->
+    <attr name="rv_cornerRadius_BL" format="dimension" />
+    <!-- 圆角弧度,单位dp,BottomRight-->
+    <attr name="rv_cornerRadius_BR" format="dimension" />
+    <!-- 是否有Ripple效果,api21+有效-->
+    <attr name="rv_isRippleEnable" format="boolean" />
+
+    <attr name="sysTopBarColorPrimary" format="reference|color" />
+
+    <declare-styleable name="RoundTextView">
+        <attr name="rv_startColor" />
+        <attr name="rv_endColor" />
+        <attr name="rv_orientationr" />
+        <attr name="rv_backgroundColor" />
+        <attr name="rv_background" />
+        <attr name="rv_backgroundPressColor" />
+        <attr name="rv_cornerRadius" />
+        <attr name="rv_strokeWidth" />
+        <attr name="rv_strokeColor" />
+        <attr name="rv_strokePressColor" />
+        <attr name="rv_textPressColor" />
+        <attr name="rv_isRadiusHalfHeight" />
+        <attr name="rv_isWidthHeightEqual" />
+        <attr name="rv_cornerRadius_TL" />
+        <attr name="rv_cornerRadius_TR" />
+        <attr name="rv_cornerRadius_BL" />
+        <attr name="rv_cornerRadius_BR" />
+        <attr name="rv_isRippleEnable" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundLinearLayout">
+        <attr name="rv_startColor" />
+        <attr name="rv_endColor" />
+        <attr name="rv_orientationr" />
+        <attr name="rv_background" />
+        <attr name="rv_backgroundColor" />
+        <attr name="rv_backgroundPressColor" />
+        <attr name="rv_cornerRadius" />
+        <attr name="rv_strokeWidth" />
+        <attr name="rv_strokeColor" />
+        <attr name="rv_strokePressColor" />
+        <attr name="rv_isRadiusHalfHeight" />
+        <attr name="rv_isWidthHeightEqual" />
+        <attr name="rv_cornerRadius_TL" />
+        <attr name="rv_cornerRadius_TR" />
+        <attr name="rv_cornerRadius_BL" />
+        <attr name="rv_cornerRadius_BR" />
+        <attr name="rv_isRippleEnable" />
+    </declare-styleable>
+    <declare-styleable name="RoundRelativeLayout">
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundFrameLayout">
+        <attr name="rv_startColor" />
+        <attr name="rv_endColor" />
+        <attr name="rv_orientationr" />
+        <attr name="rv_background" />
+        <attr name="rv_backgroundColor" />
+        <attr name="rv_backgroundPressColor" />
+        <attr name="rv_cornerRadius" />
+        <attr name="rv_strokeWidth" />
+        <attr name="rv_strokeColor" />
+        <attr name="rv_strokePressColor" />
+        <attr name="rv_isRadiusHalfHeight" />
+        <attr name="rv_isWidthHeightEqual" />
+        <attr name="rv_cornerRadius_TL" />
+        <attr name="rv_cornerRadius_TR" />
+        <attr name="rv_cornerRadius_BL" />
+        <attr name="rv_cornerRadius_BR" />
+        <attr name="rv_isRippleEnable" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundConstraintLayout">
+        <attr name="rv_startColor" />
+        <attr name="rv_endColor" />
+        <attr name="rv_orientationr" />
+        <attr name="rv_background" />
+        <attr name="rv_backgroundColor" />
+        <attr name="rv_backgroundPressColor" />
+        <attr name="rv_cornerRadius" />
+        <attr name="rv_strokeWidth" />
+        <attr name="rv_strokeColor" />
+        <attr name="rv_strokePressColor" />
+        <attr name="rv_isRadiusHalfHeight" />
+        <attr name="rv_isWidthHeightEqual" />
+        <attr name="rv_cornerRadius_TL" />
+        <attr name="rv_cornerRadius_TR" />
+        <attr name="rv_cornerRadius_BL" />
+        <attr name="rv_cornerRadius_BR" />
+        <attr name="rv_isRippleEnable" />
+    </declare-styleable>
+    <declare-styleable name="RoundImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="scale_height_width" format="float" />
+        <attr name="rv_radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="BubbleLayout">
+        <attr name="background_color" format="color" />
+        <attr name="shadow_color" format="color" />
+        <attr name="shadow_size" format="dimension" />
+        <attr name="bg_radius" format="dimension" />
+        <attr name="arrow_height" format="dimension" />
+        <attr name="arrow_width" format="dimension" />
+        <attr name="arrow_radius" format="dimension" />
+        <attr name="direction" format="enum">
+            <enum name="left" value="1" />
+            <enum name="top" value="2" />
+            <enum name="right" value="3" />
+            <enum name="bottom" value="4" />
+        </attr>
+        <attr name="offset" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="BubbleView">
+        <attr name="bv_bubble_background_color" format="color" />
+        <attr name="bv_bg_radius" format="dimension" />
+        <attr name="bv_arrow_height" format="dimension" />
+        <attr name="bv_arrow_width" format="dimension" />
+        <attr name="bv_bubble_width" format="dimension"/>
+        <attr name="bv_bubble_height" format="dimension"/>
+        <attr name="bv_bubble_padding_left" format="dimension"/>
+        <attr name="bv_bubble_padding_right" format="dimension"/>
+        <attr name="bv_bubble_padding_top" format="dimension"/>
+        <attr name="bv_bubble_padding_bottom" format="dimension"/>
+        <attr name="bv_direction" format="enum">
+            <enum name="left" value="1" />
+            <enum name="top" value="2" />
+            <enum name="right" value="3" />
+            <enum name="bottom" value="4" />
+        </attr>
+        <attr name="bv_offset" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="AvatarImageView">
+        <attr name="av_news_background_color" format="color" />
+        <attr name="av_mood_background_color" format="color" />
+        <attr name="av_image_width" format="dimension" />
+        <attr name="av_image_height" format="dimension" />
+        <attr name="av_message_width" format="dimension" />
+        <attr name="av_message_height" format="dimension" />
+        <attr name="av_message_radius" format="dimension" />
+        <attr name="av_message_text_size" format="dimension" />
+        <attr name="av_message_text_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="MaskedEditText">
+        <attr name="mask" format="string" />
+        <attr name="allowed_chars" format="string" />
+        <attr name="enable_ime_action" format="boolean" />
+        <attr name="denied_chars" format="string" />
+        <attr name="char_representation" format="string" />
+        <attr name="keep_hint" format="boolean" />
+        <attr name="edit_type" format="enum">
+            <enum name="invite" value="1" />
+            <enum name="delete" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ExpandableTextView">
+        <attr name="etv_MaxLinesOnShrink" format="reference|integer" />
+        <attr name="etv_EllipsisHint" format="reference|string" /><!--default is ..-->
+        <attr name="etv_ToExpandHint" format="reference|string" /><!--"to expand" hint string, default is "Expand"-->
+        <attr name="etv_ToShrinkHint" format="reference|string" /><!--"to shrink" hint string, default is "Shrink"-->
+        <attr name="etv_GapToExpandHint" format="reference|string" /><!--gap between "toExpandHint" and "trimmed text"-->
+        <attr name="etv_GapToShrinkHint" format="reference|string" /><!--gap between "toShrinkHint" and "trimmed text"-->
+        <attr name="etv_EnableToggle" format="reference|boolean" /><!--if toggle the state when click ExpandTextView-->
+        <attr name="etv_ToExpandHintShow" format="reference|boolean" /><!--if show "toExpandHint"-->
+        <attr name="etv_ToShrinkHintShow" format="reference|boolean" /><!--if show "toShrinkHint"-->
+        <attr name="etv_ToExpandHintColor" format="reference|color" /><!--text color of "toExpandHint"-->
+        <attr name="etv_ToShrinkHintColor" format="reference|color" /><!--text color of "toShrinkHint"-->
+        <attr name="etv_ToExpandHintColorBgPressed" format="reference|color" /><!--background color if "toExpandHint" pressed-->
+        <attr name="etv_ToShrinkHintColorBgPressed" format="reference|color" /><!--background color if "toShrinkHint" pressed-->
+        <attr name="etv_InitState" format="enum"><!--init state, default is shrink-->
+            <enum name="shrink" value="0"/>
+            <enum name="expand" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SwipeRevealLayout">
+        <attr name="dragEdge">
+            <flag name="left" value="1" />
+            <flag name="right" value="2" />
+            <flag name="top" value="4" />
+            <flag name="bottom" value="8" />
+        </attr>
+
+        <attr name="mode">
+            <enum name="normal" value="0" />
+            <enum name="same_level"   value="1" />
+        </attr>
+
+        <attr name="flingVelocity" format="integer" />
+
+        <attr name="minDistRequestDisallowParent" format="dimension" />
+    </declare-styleable>
+
+</resources>

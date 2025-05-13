@@ -4,6 +4,8 @@ android {
     namespace 'com.hope.common'
 
     defaultConfig {
+
+        android.buildFeatures.buildConfig true
     }
 }
 dependencies {

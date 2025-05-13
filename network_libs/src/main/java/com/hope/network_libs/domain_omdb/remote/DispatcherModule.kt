@@ -1,4 +1,4 @@
-package com.hope.network_libs.domain_omdb.di
+package com.hope.network_libs.domain_omdb.remote
 
 import dagger.Module
 import dagger.Provides
