@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+apply plugin: 'com.google.gms.google-services'
 apply from: "$rootDir/common.gradle"
 android {
     namespace 'com.hope.projectskull'

@@ -16,7 +16,7 @@ import com.hope.main_ui.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@Route(path = RoutePath.HomeFragment.PREVOUS_CHAT)
+@Route(path = RoutePath.HomeFragment.PREVIOUS_CHAT)
 @AndroidEntryPoint
 class PreviousChatFragment : BaseFragment<HomeViewModel, LayoutHistoryfragmentBinding>() {
 
@@ -53,6 +53,9 @@ class PreviousChatFragment : BaseFragment<HomeViewModel, LayoutHistoryfragmentBi
                     DatabaseManager.imageItemDao().deleteById(item.id)
                     loadInitialData()
                 }
+            }
+
+            override fun onEventClick(position: Int, item: ImageItem) {
             }
         })
     }

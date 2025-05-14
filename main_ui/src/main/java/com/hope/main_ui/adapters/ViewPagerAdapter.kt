@@ -21,7 +21,7 @@ class ViewPagerAdapter(
         when (position) {
             0 -> return RouterUtils().navigateToHomeFragment(query = searchQuery[position])
             1 -> return RouterUtils().navigateToPreviousChat(query = searchQuery[position])
-            2 -> return RouterUtils().navigateToHistoryFragment(query = searchQuery[position])
+            2 -> return RouterUtils().navigateToHomeBackUpFragment(query = searchQuery[position])
             3 -> return RouterUtils().navigateToHistoryFragment(query = searchQuery[position])
         }
         return RouterUtils().navigateToHomeFragment(query = searchQuery[position])

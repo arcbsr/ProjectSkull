@@ -7,53 +7,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Image Card -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/image_card"
-            android:layout_width="@dimen/dp_100"
-            android:layout_height="@dimen/dp_100"
+        <HorizontalScrollView
             android:layout_marginTop="@dimen/dp_16"
-            app:cardCornerRadius="@dimen/dp_60"
-            app:cardElevation="@dimen/dp_6"
+            android:id="@+id/ai_profiles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_2">
+                <!-- Google Sign-In Button -->
+                <include
+                    android:id="@+id/login_out"
+                    layout="@layout/item_ai_profle" />
+                <!-- Image Card -->
+                <include
+                    android:id="@+id/item_ai_profile_1"
+                    layout="@layout/item_ai_profle" />
 
-                <ImageView
-                    android:id="@+id/imageview_d"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="Image Preview"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/im_placeholder" />
+                <include
+                    android:id="@+id/item_ai_profile_2"
+                    layout="@layout/item_ai_profle" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/btn_pick_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/white_60"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="Select"
-                    android:textColor="@color/orange"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                <include
+                    android:id="@+id/item_ai_profile_3"
+                    layout="@layout/item_ai_profle" />
+            </LinearLayout>
+
+        </HorizontalScrollView>
         <!-- Separator Line -->
         <View
             android:id="@+id/separator_line"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/dp_16"
-            android:background="@color/gray_20"
+            android:layout_height=".5dp"
+            android:background="@color/gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_card" />
+            app:layout_constraintTop_toBottomOf="@id/ai_profiles" />
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
@@ -67,7 +63,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/separator_line"
-            tools:itemCount="6"
+            tools:itemCount="1"
             tools:listitem="@layout/item_image" />
 
 
@@ -117,6 +113,15 @@
                     android:contentDescription="Send"
                     android:src="@drawable/ic_send"
                     app:tint="@color/black" />
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_save"
+                    android:layout_width="@dimen/dp_56"
+                    android:layout_height="@dimen/dp_56"
+                    android:layout_alignParentEnd="true"
+                    app:lottie_autoPlay="true"
+                    android:visibility="gone"
+                    app:lottie_fileName="loading_btn.json"
+                    app:lottie_loop="true" />
             </RelativeLayout>
         </LinearLayout>
 

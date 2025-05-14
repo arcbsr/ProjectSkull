@@ -11,8 +11,13 @@ class RouterUtils {
             .withString("searchQuery", query)
             .navigation() as Fragment
     }
+    fun navigateToHomeBackUpFragment(query: String): Fragment {
+        return ARouter.getInstance().build(RoutePath.HomeFragment.HOME_BACKUP)
+            .withString("searchQuery", query)
+            .navigation() as Fragment
+    }
     fun navigateToPreviousChat(query: String): Fragment {
-        return ARouter.getInstance().build(RoutePath.HomeFragment.PREVOUS_CHAT)
+        return ARouter.getInstance().build(RoutePath.HomeFragment.PREVIOUS_CHAT)
             .withString("searchQuery", query)
             .navigation() as Fragment
     }

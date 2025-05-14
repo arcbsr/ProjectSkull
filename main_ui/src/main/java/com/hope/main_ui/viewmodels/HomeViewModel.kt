@@ -28,7 +28,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseViewModel() {
     //    private val token = "Bearer $tokenText"
 //    private val prompt = RequestBody.create(MediaType.parse("text/plain"), promptText)
-    private val _state = MutableStateFlow<HomePageState>(HomePageState.Loading)
+    private val _state = MutableStateFlow<HomePageState>(HomePageState.Ideal)
     val mState: StateFlow<HomePageState> = _state
 
     fun generateImage(bitmap: Bitmap, promptText: String, context: Context) {
@@ -40,6 +40,8 @@ class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseView
         )
         val prompt = RequestBody.create(MediaType.parse("text/plain"), promptText)
         viewModelScope.launch {
+
+            _state.value = HomePageState.Loading
             useCase.generateImage(imagePart, token, prompt).onStart {}.catch {
                 _state.value = HomePageState.Error("Unknown")
             }.collect {
@@ -72,12 +74,15 @@ class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseView
             }
         }
     }
+
     private val token =
         "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjM5ZmJhYTJmNzA4ZTc3NjEwNDc2NzU3MjYwNGM0ZjU2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMTEtMDRUMTU6MDE6NDguMjMyOTIzIn0.QZtSSUEfdBYTMed9kQRwDbXnJ33j8IxC9rbn1r76TpQ"
 
     fun retrieveImage(processId: String, item: ImageItem) {
 
         viewModelScope.launch {
+
+            _state.value = HomePageState.Loading
             useCase.getImageProcessingResponse(processId = processId, authorization = token)
                 .onStart {}.catch {
                     _state.value = HomePageState.Error("Unknown")
@@ -106,6 +111,7 @@ class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseView
                                 if (it.value.result == null || it.value.result.output == null || it.value.result.output.isEmpty()) {
                                     _state.value = HomePageState.EndOfSearch
                                 } else {
+                                    Log.w("Rafiur>>", "process_id: ${it.value.result.output}")
                                     _state.value =
                                         HomePageState.ImageData(it.value.result.output[0], item)
                                 }
@@ -125,6 +131,44 @@ class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseView
         return tempFile
     }
 
+    fun generateTxtToImage(promptText: String) {
+
+        val prompt = RequestBody.create(MediaType.parse("text/plain"), promptText)
+        viewModelScope.launch {
+            _state.value = HomePageState.Loading
+            useCase.generateTextImage(token, prompt).onStart {}.catch {
+                _state.value = HomePageState.Error("Unknown")
+            }.collect {
+                when (it) {
+                    is ResponseWrapper.GenericError -> {
+                        it.error?.let { msg ->
+                            _state.value = HomePageState.Error("${it.code} : $msg")
+                            Log.w("Rafiur>>", "Error: ${it.code} : $msg")
+                        }
+                    }
+
+                    ResponseWrapper.NetworkError -> {
+                        _state.value = HomePageState.Error("Network Error")
+                        Log.w("Rafiur>>", "Network Error")
+                    }
+
+                    is ResponseWrapper.Success -> {
+                        delay(600)
+                        if (it.value?.process_id == null || it.value.process_id.isEmpty()) {
+                            _state.value = HomePageState.EndOfSearch
+                            Log.w("Rafiur>>", "process_id: ${it.value.process_id}")
+                        } else {
+                            //TODO: handle the response
+                            Log.w("Rafiur>>", "process_id: ${it.value.process_id}")
+                            _state.value = HomePageState.Success(it.value.process_id)
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
     companion object {
         const val MAX_RETRIES = 5
         const val RETRY_DELAY = 5000L
@@ -137,6 +181,7 @@ sealed class HomePageState {
     object Loading : HomePageState()
     object EndOfSearch : HomePageState()
     data class Success(val processID: String) : HomePageState()
-    data class ImageData(val imageLink: String, val item:ImageItem) : HomePageState()
+    data class ImageData(val imageLink: String, val item: ImageItem) : HomePageState()
     data class Error(val message: String) : HomePageState()
+    object Ideal : HomePageState()
 }

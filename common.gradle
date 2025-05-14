@@ -77,7 +77,6 @@ dependencies {
     implementation rootProject.ext.libs.compose_material3
     implementation rootProject.ext.libs.base_recyclerview_adapter_helper
     implementation rootProject.ext.libs.circleimageview
-
     implementation rootProject.ext.libs.hilt
     kapt rootProject.ext.libs.hilt_kapt
     implementation rootProject.ext.libs.retrofit

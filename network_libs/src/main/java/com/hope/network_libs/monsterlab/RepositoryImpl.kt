@@ -30,4 +30,13 @@ class RepositoryImpl @Inject constructor(private val remoteDataSource: DataSourc
             emit(remoteDataSource.generateImage(imagePart, authorization, prompt))
         }
     }
+
+    override suspend fun generateTxtToImage(
+        authorization: String,
+        prompt: RequestBody
+    ): Flow<ResponseWrapper<MonsterApiService.MonsEffectResponse>> {
+        return flow {
+            emit(remoteDataSource.generateTxtToImage(authorization, prompt))
+        }
+    }
 }

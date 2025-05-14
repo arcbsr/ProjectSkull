@@ -42,6 +42,14 @@ public interface MonsterApiService {
     ): MonsEffectResponse
 
     @Multipart
+    @POST("generate/sdxl-base")
+    suspend fun generateTxtToImage(
+        @Header("accept") accept: String = "application/json",
+        @Header("authorization") authorization: String,
+        @Part("prompt") prompt: RequestBody,
+    ): MonsEffectResponse
+
+    @Multipart
     @POST("generate/pix2pix")
     suspend fun generateImagepix2pix(
         @Header("accept") accept: String = "application/json",

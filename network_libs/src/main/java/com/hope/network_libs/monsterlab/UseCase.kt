@@ -61,4 +61,27 @@ class UseCase @Inject constructor(private val repository: Repository) {
             }
         }
     }
+    suspend fun generateTextImage(
+        authorization: String,
+        prompt: RequestBody,
+    ): Flow<ResponseWrapper<MonsterApiService.MonsEffectResponse>> {
+        return repository.generateTxtToImage(
+            authorization = authorization,
+            prompt = prompt,
+        ).map {
+            when (it) {
+                is ResponseWrapper.GenericError -> {
+                    ResponseWrapper.GenericError(it.code, it.error)
+                }
+
+                ResponseWrapper.NetworkError -> {
+                    ResponseWrapper.NetworkError
+                }
+
+                is ResponseWrapper.Success -> {
+                    ResponseWrapper.Success(it.value)
+                }
+            }
+        }
+    }
 }

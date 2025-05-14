@@ -35,15 +35,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/dp_20">
+            android:padding="@dimen/dp_20"
+            android:visibility="gone">
 
-            <com.hope.resources.shape.RoundImageView
-                android:id="@+id/im_reload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp_2"
-                android:src="@drawable/ic_reload"
-                app:rv_radius="@dimen/dp_66" />
 
             <com.hope.resources.shape.RoundImageView
                 android:id="@+id/im_delete"
@@ -54,7 +48,7 @@
                 app:rv_radius="@dimen/dp_66" />
         </LinearLayout>
         <!-- Chat Bubble as Image Detail -->
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -74,13 +68,23 @@
                 style="@style/TextViewDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/chat_bubble_icon"
                 android:background="@drawable/bg_chat_bubble_arrow"
                 android:lineSpacingExtra="@dimen/dp_4"
                 android:maxWidth="@dimen/dp_260"
-                android:text="A scenic view "
                 android:textColor="@color/black"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText"
+                tools:text="A scenic view " />
 
-        </LinearLayout>
+            <com.hope.resources.shape.RoundImageView
+                android:id="@+id/im_reload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_2"
+                android:src="@drawable/ic_reload"
+                app:rv_radius="@dimen/dp_66" />
+        </RelativeLayout>
     </LinearLayout>
 </layout>

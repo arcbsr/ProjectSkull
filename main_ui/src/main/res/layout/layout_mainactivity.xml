@@ -25,8 +25,9 @@
                 style="@style/TextViewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
                 android:text="Hello, Good Morning..."
-                android:textSize="@dimen/sp_18" />
+                android:textSize="@dimen/sp_22" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"

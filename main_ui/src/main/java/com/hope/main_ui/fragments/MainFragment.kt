@@ -1,10 +1,14 @@
 package com.hope.main_ui.fragments
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.text.TextUtils
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,15 +16,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.bumptech.glide.Glide
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.fondesa.kpermissions.extension.send
 import com.fondesa.kpermissions.isGranted
 import com.hope.common.log.Log
 import com.hope.db_libs.dbmanager.DatabaseManager
 import com.hope.db_libs.dbmanager.ImageItem
+import com.hope.firebase.auth.GoogleAuthProviderStrategy
+import com.hope.firebase.database.FirebaseDB
+import com.hope.firebase.auth.LoginHelper
+import com.hope.firebase.database.UserFirebase
 import com.hope.lib_mvvm.fragment.BaseFragment
 import com.hope.main_ui.adapters.GridSpacingItemDecoration
 import com.hope.main_ui.adapters.ImageGridAdapter
+import com.hope.main_ui.aimodels.AIData
 import com.hope.main_ui.databinding.LayoutMainfragmentBinding
 import com.hope.main_ui.routers.RoutePath
 import com.hope.main_ui.utils.CropEngine
@@ -28,6 +38,7 @@ import com.hope.main_ui.utils.GetPathFromUri
 import com.hope.main_ui.utils.GlideEngine
 import com.hope.main_ui.viewmodels.HomePageState
 import com.hope.main_ui.viewmodels.HomeViewModel
+import com.hope.resources.R
 import com.luck.picture.lib.basic.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.config.SelectMimeType
@@ -45,7 +56,6 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
     @Autowired(name = "searchQuery")
     @JvmField
     var searchQuery: String? = null
-
     private val adapter = ImageGridAdapter()
     private var selectedImages: String? = null
     private var processID: String? = null
@@ -58,8 +68,81 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
         setupRecyclerView()
         loadInitialData()
         setupListeners()
+        init()
     }
 
+    private lateinit var loginHelper: LoginHelper
+    private fun init() {
+        loginHelper = LoginHelper(
+            GoogleAuthProviderStrategy(
+                fragment = this,
+                clientId = "1080800805976-1fd1tf93ejitmllp6e8nug3tqs58bjeh.apps.googleusercontent.com",
+                onLoginSuccess = { user ->
+                    // ✅ Handle successful login
+                    Toast.makeText(requireContext(), "Welcome $user", Toast.LENGTH_SHORT).show()
+                    setupForUserData()
+
+                    val userDb = FirebaseDB("users", UserFirebase::class.java)
+                    val newUser = UserFirebase(name = loginHelper.getCurrentUserDisplayName()!!, age = 25, profilePicture = loginHelper.getCurrentUserPhotoUrl()!!)
+                    loginHelper.getCurrentUserID()?.let { it ->
+                        userDb.create(
+                            id = "$it",
+                            data = newUser,
+                            onSuccess = {
+                                println("User successfully added!")
+                            },
+                            onError = {
+                                println("Failed to add user: $it")
+                            }
+                        )
+                    }
+                },
+                onLoginError = { error ->
+                    // ❌ Handle login error
+                    Toast.makeText(
+                        requireContext(),
+                        "Login failed: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    setupForUserData()
+                }
+            )
+        )
+
+        mDatabind.loginOut.cardAi1.setOnClickListener {
+            loginHelper.startLogin()
+        }
+        setupForUserData()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        loginHelper.handleLoginResult(requestCode, data)
+    }
+
+    private fun setupForUserData() {
+        val userId = loginHelper.getCurrentUserID()
+        Log.e("User: $userId")
+        if (userId != null) {
+            mDatabind.loginOut.txtAi1.text = loginHelper.getCurrentUserDisplayName()
+            GlideEngine.createGlideEngine()
+                .loadImage(requireContext(), loginHelper.getCurrentUserPhotoUrl()!!, mDatabind.loginOut.imAi1)
+            mDatabind.loginOut.cardAi1.setOnClickListener {
+                loginHelper.signOut {
+                    mDatabind.loginOut.txtAi1.text = "Login"
+                    setupForUserData()
+                }
+            }
+        } else {
+            mDatabind.loginOut.cardAi1.setOnClickListener {
+                loginHelper.startLogin()
+            }
+            Glide.with(requireContext())
+                .load(R.drawable.ic_profile)
+                .into( mDatabind.loginOut.imAi1)
+            mDatabind.loginOut.txtAi1.text = "Log In"
+        }
+    }
     private fun setupRecyclerView() {
         mDatabind.chatRecyclerView.adapter = adapter
         val spacingInPx = (16 * resources.displayMetrics.density).toInt()
@@ -79,7 +162,16 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
                     refreshImageList()
                 }
             }
+
+            override fun onEventClick(position: Int, item: ImageItem) {
+
+            }
         })
+        val aiData = AIData.getRandomThreeAINames()
+        mDatabind.itemAiProfile1.txtAi1.text = aiData[0].name
+        mDatabind.itemAiProfile2.txtAi1.text = aiData[1].name
+        mDatabind.itemAiProfile3.txtAi1.text = aiData[2].name
+
     }
 
     private fun loadInitialData() {
@@ -90,17 +182,25 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
     }
 
     private fun setupListeners() {
-        mDatabind.btnPickImage.setOnClickListener { requestImagePermissionAndPick() }
+        mDatabind.chatBubbleIcon.setOnClickListener { requestImagePermissionAndPick() }
 
         mDatabind.btnSend.setOnClickListener {
+            if (mDatabind.editTextMessage.text.toString().isEmpty()) {
+                Toast.makeText(requireContext(), "Please enter a prompt!", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
             val bitmap = BitmapFactory.decodeFile(selectedImages)
             if (bitmap != null) {
                 viewModel.generateImage(
-                    promptText = "Create cartoon effect",
+                    promptText = mDatabind.editTextMessage.text.toString(),
                     context = requireContext(),
                     bitmap = bitmap
                 )
             } else {
+                viewModel.generateTxtToImage(
+                    promptText = mDatabind.editTextMessage.text.toString()
+                )
                 Toast.makeText(requireContext(), "Image not selected!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -152,8 +252,8 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
 
                         if (!TextUtils.isEmpty(path)) {
                             selectedImages = path
-                            GlideEngine.createGlideEngine()
-                                .loadImage(requireContext(), path, mDatabind.imageviewD)
+//                            GlideEngine.createGlideEngine()
+//                                .loadImage(requireContext(), path, mDatabind.imageviewD)
                             GlideEngine.createGlideEngine()
                                 .loadImage(requireContext(), path, mDatabind.chatBubbleIcon)
                         }
@@ -170,25 +270,41 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
                 viewModel.mState.collect { state ->
                     when (state) {
                         is HomePageState.Loading -> {
+                            hideSoftKeyboard()
                             Log.d("MainFragment", "Loading...")
+                            mDatabind.lottieSave.visibility = View.VISIBLE
+                            mDatabind.btnSend.visibility = View.GONE
                         }
 
                         is HomePageState.Success -> {
                             processID = state.processID
                             insertImageItem()
+                            mDatabind.lottieSave.visibility = View.GONE
+                            mDatabind.btnSend.visibility = View.VISIBLE
                         }
 
                         is HomePageState.Error -> {
+                            mDatabind.lottieSave.visibility = View.GONE
+                            mDatabind.btnSend.visibility = View.VISIBLE
                             Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
                             Log.e("MainFragment", "Error: ${state.message}")
                         }
 
                         is HomePageState.EndOfSearch -> {
+                            mDatabind.lottieSave.visibility = View.GONE
+                            mDatabind.btnSend.visibility = View.VISIBLE
                             Log.d("MainFragment", "End of search")
                         }
 
                         is HomePageState.ImageData -> {
                             updateImageData(state.imageLink, state.item)
+                            mDatabind.lottieSave.visibility = View.GONE
+                            mDatabind.btnSend.visibility = View.VISIBLE
+                        }
+
+                        HomePageState.Ideal -> {
+                            mDatabind.lottieSave.visibility = View.GONE
+                            mDatabind.btnSend.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -197,7 +313,7 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
     }
 
     private fun insertImageItem() {
-        if (selectedImages.isNullOrEmpty()) {
+        if (processID.isNullOrEmpty()) {
             Toast.makeText(context, "Image not selected!", Toast.LENGTH_SHORT).show()
             return
         }
@@ -210,7 +326,7 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
                 createdAt = Date(),
                 isCreated = false,
                 isError = false,
-                details = "This is a sample image",
+                details = mDatabind.editTextMessage.text.toString(),
                 processId = processID.orEmpty()
             )
             DatabaseManager.imageItemDao().insert(item)
@@ -230,6 +346,14 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
     private suspend fun refreshImageList() {
         val updatedList = DatabaseManager.imageItemDao().getRecentData()
         adapter.setNewInstance(updatedList.toMutableList())
-
+        mDatabind.editTextMessage.text?.clear()
     }
+
+    private fun hideSoftKeyboard() {
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+
 }

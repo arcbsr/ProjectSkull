@@ -61,13 +61,15 @@ ext {
             model_libs                      : ':model_libs',
             network_libs                    : ':network_libs',
             common                          : ':common',
-            db_libs                          : ':db_libs',
+            db_libs                         : ':db_libs',
+            firebase_lib                    : ':firebase',
             arouter                         : "com.alibaba:arouter-api:1.5.2",
             arouter_compiler                : "com.alibaba:arouter-compiler:1.5.2",
             circleimageview                 : "de.hdodenhof:circleimageview:3.1.0",
             retrofit                        : "com.squareup.retrofit2:retrofit:${retrofit_version}",
             gson                            : "com.google.code.gson:gson:${gson_version}",
             retrofit_gson                   : "com.squareup.retrofit2:converter-gson:${retrofit_version}",
+            lottie                          : ('com.airbnb.android:lottie:3.7.0'),
 
     ]
 }

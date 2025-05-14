@@ -22,10 +22,12 @@ dependencies {
     implementation project(path: rootProject.ext.libs.network_libs)
     implementation project(path: rootProject.ext.libs.model_libs)
     implementation project(path: rootProject.ext.libs.db_libs)
+    implementation project(path: rootProject.ext.libs.firebase_lib)
     implementation rootProject.ext.libs.xpopup
     implementation rootProject.ext.libs.arouter
     kapt rootProject.ext.libs.arouter_compiler
     implementation rootProject.ext.libs.nice_image_view
+    implementation rootProject.ext.libs.lottie
     implementation 'com.github.bumptech.glide:glide:4.16.0'
 
     // PictureSelector basic (Necessary)
@@ -48,6 +50,7 @@ dependencies {
     implementation 'com.github.fondesa:kpermissions-rx3:3.5.0'
     // If you want the extensions for the Kotlin coroutines.
     implementation 'com.github.fondesa:kpermissions-coroutines:3.5.0'
+
 
 
 }

@@ -23,6 +23,7 @@ class ImageGridAdapter :
     interface OnEventClickListener {
         fun onEventClickReload(position: Int, item: ImageItem)
         fun onEventClickDelete(position: Int, item: ImageItem)
+        fun onEventClick(position: Int, item: ImageItem)
     }
 
     override fun convert(holder: ViewHolder, item: ImageItem) {
@@ -31,10 +32,10 @@ class ImageGridAdapter :
                 chatBubble.text = it.details
                 if (it.imageUrl.isNullOrEmpty()) {
                     imageCard.visibility = View.GONE
-                    layoutAction.visibility = View.VISIBLE
+                    imReload.visibility = View.VISIBLE
                 } else {
                     imageCard.visibility = View.VISIBLE
-                    layoutAction.visibility = View.GONE
+                    imReload.visibility = View.GONE
                     Glide
                         .with(context)
                         .load(it.imageUrl)
@@ -53,6 +54,9 @@ class ImageGridAdapter :
                 }
                 imDelete.setOnClickListener {
                     onEventClickListener.onEventClickDelete(holder.layoutPosition, item)
+                }
+                holder.itemView.setOnClickListener {
+                    onEventClickListener.onEventClick(holder.layoutPosition, item)
                 }
             }
         }

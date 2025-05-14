@@ -42,5 +42,18 @@ class DataSource @Inject constructor(
         }, ioDispatcher)
     }
 
+    suspend fun generateTxtToImage(
+        authorization: String,
+        prompt: RequestBody,
+    ): ResponseWrapper<MonsterApiService.MonsEffectResponse> {
+        return safeApiCall(apiCall = {
+            apiService.generateTxtToImage(
+                authorization = authorization,
+                prompt = prompt,
+            )
+
+        }, ioDispatcher)
+    }
+
 }
 

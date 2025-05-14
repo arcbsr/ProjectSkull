@@ -19,4 +19,8 @@ interface Repository {
         authorization: String,
         prompt: RequestBody,
     ): Flow<ResponseWrapper<MonsterApiService.MonsEffectResponse>>
+    suspend fun generateTxtToImage(
+        authorization: String,
+        prompt: RequestBody,
+    ): Flow<ResponseWrapper<MonsterApiService.MonsEffectResponse>>
 }
