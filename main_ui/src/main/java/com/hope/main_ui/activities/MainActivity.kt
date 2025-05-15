@@ -8,6 +8,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.hope.common.log.Log
 import com.hope.db_libs.dbmanager.DatabaseManager
+import com.hope.firebase.database.FirebaseDB
+import com.hope.firebase.database.aicreator.Models
 import com.hope.lib_mvvm.MainViewModel
 import com.hope.lib_mvvm.activity.BaseVmDbActivity
 import com.hope.main_ui.R
@@ -89,6 +91,7 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
 
     override fun initViews() {
 
+        initData()
         DatabaseManager.initialize(this)
         val titles = listOf("Home", "History", "Profile", "Settings")
 
@@ -117,6 +120,13 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
         }
         setupTabs()
     }
+
+    private fun initData() {
+
+
+    }
+
+
 
     private fun setGreetingMessage() {
 

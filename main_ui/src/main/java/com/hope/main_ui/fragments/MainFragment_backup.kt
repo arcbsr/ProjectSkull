@@ -321,7 +321,10 @@ class MainFragmentBackup : BaseFragment<HomeViewModel, LayoutMainfragmentBinding
             val item = ImageItem(
                 prompt = mDatabind.editTextMessage.text.toString(),
                 imageUrl = "",
-                localPath = selectedImages.orEmpty(),
+                localPath = "",
+                aiAgent = "",
+                aiPhoto = "",
+                aiDetails = "",
                 savedPath = "",
                 createdAt = Date(),
                 isCreated = false,

@@ -75,9 +75,18 @@
                 android:textColor="@color/black"
                 tools:ignore="HardcodedText"
                 tools:text="A scenic view " />
-
-            <com.hope.resources.shape.RoundImageView
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/im_reload"
+                android:layout_width="@dimen/dp_56"
+                android:layout_height="@dimen/dp_56"
+                android:layout_alignParentEnd="true"
+                app:lottie_autoPlay="true"
+                android:visibility="visible"
+                app:lottie_fileName="loading_btn.json"
+                app:lottie_loop="true" />
+            <com.hope.resources.shape.RoundImageView
+                android:id="@+id/im_reload2"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

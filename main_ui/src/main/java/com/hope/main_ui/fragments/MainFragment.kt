@@ -9,6 +9,7 @@ import android.os.Build
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,13 +25,13 @@ import com.hope.common.log.Log
 import com.hope.db_libs.dbmanager.DatabaseManager
 import com.hope.db_libs.dbmanager.ImageItem
 import com.hope.firebase.auth.GoogleAuthProviderStrategy
-import com.hope.firebase.database.FirebaseDB
 import com.hope.firebase.auth.LoginHelper
+import com.hope.firebase.database.FirebaseDB
 import com.hope.firebase.database.UserFirebase
+import com.hope.firebase.database.aicreator.Models
 import com.hope.lib_mvvm.fragment.BaseFragment
 import com.hope.main_ui.adapters.GridSpacingItemDecoration
 import com.hope.main_ui.adapters.ImageGridAdapter
-import com.hope.main_ui.aimodels.AIData
 import com.hope.main_ui.databinding.LayoutMainfragmentBinding
 import com.hope.main_ui.routers.RoutePath
 import com.hope.main_ui.utils.CropEngine
@@ -81,15 +82,19 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
                     // ✅ Handle successful login
                     Toast.makeText(requireContext(), "Welcome $user", Toast.LENGTH_SHORT).show()
                     setupForUserData()
-
                     val userDb = FirebaseDB("users", UserFirebase::class.java)
-                    val newUser = UserFirebase(name = loginHelper.getCurrentUserDisplayName()!!, age = 25, profilePicture = loginHelper.getCurrentUserPhotoUrl()!!)
+                    val newUser = UserFirebase(
+                        name = loginHelper.getCurrentUserDisplayName()!!,
+                        age = 25,
+                        profilePicture = loginHelper.getCurrentUserPhotoUrl()!!
+                    )
                     loginHelper.getCurrentUserID()?.let { it ->
                         userDb.create(
                             id = "$it",
                             data = newUser,
                             onSuccess = {
                                 println("User successfully added!")
+
                             },
                             onError = {
                                 println("Failed to add user: $it")
@@ -121,28 +126,49 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
     }
 
     private fun setupForUserData() {
+        mDatabind.itemAiProfile1.root.visibility = View.GONE
+        mDatabind.itemAiProfile2.root.visibility = View.GONE
+        mDatabind.itemAiProfile3.root.visibility = View.GONE
         val userId = loginHelper.getCurrentUserID()
-        Log.e("User: $userId")
+        Log.e("UserID: $userId")
         if (userId != null) {
+            fetchAllAiProfiles()
             mDatabind.loginOut.txtAi1.text = loginHelper.getCurrentUserDisplayName()
             GlideEngine.createGlideEngine()
-                .loadImage(requireContext(), loginHelper.getCurrentUserPhotoUrl()!!, mDatabind.loginOut.imAi1)
+                .loadImage(
+                    requireContext(),
+                    loginHelper.getCurrentUserPhotoUrl()!!,
+                    mDatabind.loginOut.imAi1
+                )
             mDatabind.loginOut.cardAi1.setOnClickListener {
                 loginHelper.signOut {
-                    mDatabind.loginOut.txtAi1.text = "Login"
+                    mDatabind.loginOut.txtAi1.text = "More Agents"
                     setupForUserData()
                 }
             }
+
+            val db = FirebaseDB("ai_profiles", Models.AiProfile::class.java)
+            db.readAll(
+                onSuccess = {
+                    if (it.isEmpty()) {
+                        createAiProfile()
+                    }
+                }, onError = {
+                    Log.e("Rafiur>>>", "Error: $it")
+                }
+            )
         } else {
+
             mDatabind.loginOut.cardAi1.setOnClickListener {
                 loginHelper.startLogin()
             }
             Glide.with(requireContext())
                 .load(R.drawable.ic_profile)
-                .into( mDatabind.loginOut.imAi1)
-            mDatabind.loginOut.txtAi1.text = "Log In"
+                .into(mDatabind.loginOut.imAi1)
+            mDatabind.loginOut.txtAi1.text = "More Agents"
         }
     }
+
     private fun setupRecyclerView() {
         mDatabind.chatRecyclerView.adapter = adapter
         val spacingInPx = (16 * resources.displayMetrics.density).toInt()
@@ -164,16 +190,126 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
             }
 
             override fun onEventClick(position: Int, item: ImageItem) {
-
             }
         })
-        val aiData = AIData.getRandomThreeAINames()
-        mDatabind.itemAiProfile1.txtAi1.text = aiData[0].name
-        mDatabind.itemAiProfile2.txtAi1.text = aiData[1].name
-        mDatabind.itemAiProfile3.txtAi1.text = aiData[2].name
 
     }
 
+    private fun createAiProfile() {
+
+        val db = FirebaseDB("ai_profiles", Models.AiProfile::class.java)
+        val profiles = listOf(
+            Models.AiProfile(
+                name = "Aurora",
+                imageUrl = "https://play-lh.googleusercontent.com/7Ak4Ye7wNUtheIvSKnVgGL_OIZWjGPZNV6TP_3XLxHC-sDHLSE45aDg41dFNmL5COA",
+                gender = "Female",
+                type = "Assistant",
+                personality = "Friendly and insightful",
+                age = 5,
+                description = "An advanced AI assistant developed to support users with daily tasks."
+            ),
+            Models.AiProfile(
+                name = "Zeus",
+                imageUrl = "https://aiavatar.com/globalImages/landingPage/variants/gaming.webp",
+                gender = "Male",
+                type = "Mentor",
+                personality = "Wise and strategic",
+                age = 7,
+                description = "A guiding AI mentor designed to provide strategic advice."
+            ),
+            Models.AiProfile(
+                name = "Nova",
+                imageUrl = "https://aiavatar.com/globalImages/landingPage/variants/gaming.webp",
+                gender = "Non-binary",
+                type = "Companion",
+                personality = "Curious and empathetic",
+                age = 3,
+                description = "An empathetic AI companion who loves to learn with you."
+            )
+        )
+
+
+        profiles.forEach { profile ->
+            db.createAuto(
+                profile,
+                onSuccess = { println("Profile '${profile.name}' created successfully.") },
+                onError = { e -> println("Error creating profile '${profile.name}': ${e.message}") }
+            )
+        }
+    }
+
+    private fun fetchAllAiProfiles() {
+        Log.d("Rafiur33>>", "Fetching AI profiles...")
+        val db = FirebaseDB("ai_profiles", Models.AiProfile::class.java)
+        db.readAll(
+            onSuccess = { profiles ->
+                var count = 0
+                profiles.forEach {
+                    val aiProfile = it
+                    Log.d("Rafiur33>>", "AI Profile: $it")
+                    when (count) {
+                        0 -> {
+                            mDatabind.itemAiProfile1.root.visibility = View.VISIBLE
+                            mDatabind.itemAiProfile1.txtAi1.text = it.name
+                            GlideEngine.createGlideEngine().loadImage(
+                                requireContext(),
+                                it.imageUrl,
+                                mDatabind.itemAiProfile1.imAi1
+                            )
+                            mDatabind.itemAiProfile1.root.setOnClickListener {
+                                AiSelector(mDatabind.itemAiProfile1.txtAi1, aiProfile)
+                            }
+                        }
+
+                        1 -> {
+                            mDatabind.itemAiProfile2.root.visibility = View.VISIBLE
+                            mDatabind.itemAiProfile2.txtAi1.text = it.name
+                            GlideEngine.createGlideEngine().loadImage(
+                                requireContext(),
+                                it.imageUrl,
+                                mDatabind.itemAiProfile2.imAi1
+                            )
+                            mDatabind.itemAiProfile2.root.setOnClickListener {
+                                AiSelector(mDatabind.itemAiProfile2.txtAi1, aiProfile)
+                            }
+                        }
+
+                        2 -> {
+                            mDatabind.itemAiProfile3.root.visibility = View.VISIBLE
+                            mDatabind.itemAiProfile3.txtAi1.text = it.name
+                            GlideEngine.createGlideEngine().loadImage(
+                                requireContext(),
+                                it.imageUrl,
+                                mDatabind.itemAiProfile3.imAi1
+                            )
+                            mDatabind.itemAiProfile3.root.setOnClickListener {
+                                AiSelector(mDatabind.itemAiProfile3.txtAi1, aiProfile)
+                            }
+                        }
+
+                        else -> {
+                            // Handle more profiles if needed
+                        }
+                    }
+                    count++
+                }
+                AiSelector(null, null)
+            },
+            onError = { e ->
+                Log.e("Rafiur33>>", "Error fetching AI profiles: ${e.message}")
+            }
+        )
+    }
+
+    private fun AiSelector(selectedProfile: TextView?, aiProfile: Models.AiProfile?) {
+        mDatabind.itemAiProfile1.txtAi1.setBackgroundColor(resources.getColor(R.color.orange))
+        mDatabind.itemAiProfile2.txtAi1.setBackgroundColor(resources.getColor(R.color.orange))
+        mDatabind.itemAiProfile3.txtAi1.setBackgroundColor(resources.getColor(R.color.orange))
+        selectedProfile?.setBackgroundColor(resources.getColor(R.color.green))
+        selectedAiProfile = aiProfile
+    }
+
+    private var selectedAiProfile: Models.AiProfile? = null
     private fun loadInitialData() {
         lifecycleScope.launch {
             val imageItems = DatabaseManager.imageItemDao().getRecentData()
@@ -185,9 +321,11 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
         mDatabind.chatBubbleIcon.setOnClickListener { requestImagePermissionAndPick() }
 
         mDatabind.btnSend.setOnClickListener {
-            if (mDatabind.editTextMessage.text.toString().isEmpty()) {
-                Toast.makeText(requireContext(), "Please enter a prompt!", Toast.LENGTH_SHORT)
-                    .show()
+            if (mDatabind.editTextMessage.text?.trim().toString().isEmpty()) {
+//                Toast.makeText(requireContext(), "Please enter a prompt!", Toast.LENGTH_SHORT)
+//                    .show()
+                mDatabind.editTextMessage.text?.clear()
+                mDatabind.editTextMessage.setHintTextColor(resources.getColor(R.color.red))
                 return@setOnClickListener
             }
             val bitmap = BitmapFactory.decodeFile(selectedImages)
@@ -201,7 +339,7 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
                 viewModel.generateTxtToImage(
                     promptText = mDatabind.editTextMessage.text.toString()
                 )
-                Toast.makeText(requireContext(), "Image not selected!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "Image not selected!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -321,7 +459,10 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
             val item = ImageItem(
                 prompt = mDatabind.editTextMessage.text.toString(),
                 imageUrl = "",
-                localPath = selectedImages.orEmpty(),
+                localPath = selectedAiProfile?.imageUrl ?: "",
+                aiAgent = selectedAiProfile?.name ?: "",
+                aiPhoto = selectedAiProfile?.imageUrl ?: "",
+                aiDetails = selectedAiProfile?.description ?: "",
                 savedPath = "",
                 createdAt = Date(),
                 isCreated = false,

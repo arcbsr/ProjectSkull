@@ -9,6 +9,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class GoogleAuthProviderStrategy(
@@ -65,6 +66,8 @@ class GoogleAuthProviderStrategy(
 
     override fun getCurrentUserID(): String? {
         return auth.currentUser?.uid
+//        FirebaseDatabase.getInstance().reference.push().key
+
     }
     override fun getCurrentUserEmail(): String? {
         return auth.currentUser?.email

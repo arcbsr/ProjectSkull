@@ -19,7 +19,11 @@ class FirebaseDB<T>(private val subPath: String, private val clazz: Class<T>) {
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onError(it) }
     }
-
+    fun createAuto(data: T, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        database.push().setValue(data)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { onError(it) }
+    }
     fun read(id: String, onSuccess: (T?) -> Unit, onError: (Exception) -> Unit) {
         database.child(id).get()
             .addOnSuccessListener { snapshot ->
@@ -28,7 +32,20 @@ class FirebaseDB<T>(private val subPath: String, private val clazz: Class<T>) {
             }
             .addOnFailureListener { onError(it) }
     }
-
+    fun readAll(onSuccess: (List<T>) -> Unit, onError: (Exception) -> Unit) {
+        database.get()
+            .addOnSuccessListener { snapshot ->
+                val items = mutableListOf<T>()
+                for (child in snapshot.children) {
+                    val item = child.getValue(clazz)
+                    if (item != null) {
+                        items.add(item)
+                    }
+                }
+                onSuccess(items)
+            }
+            .addOnFailureListener { onError(it) }
+    }
     fun update(id: String, updates: Map<String, Any>, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         database.child(id).updateChildren(updates)
             .addOnSuccessListener { onSuccess() }

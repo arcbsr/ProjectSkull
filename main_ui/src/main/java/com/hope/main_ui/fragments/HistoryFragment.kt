@@ -15,6 +15,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.hope.main_ui.routers.RoutePath
 import com.hope.lib_mvvm.fragment.BaseFragment
 import com.hope.main_ui.R
+import com.hope.main_ui.adapters.CustomBaseQuickAdapter
 import com.hope.main_ui.adapters.MovieAdapter
 import com.hope.main_ui.databinding.LayoutHistoryfragmentBinding
 import com.hope.main_ui.databinding.LayoutMainfragmentBinding
@@ -61,7 +62,6 @@ class HistoryFragment :
         }
         adapter.addFooterView(footerView)
 
-
         searchQuery?.let { viewModel.fetchMovieList(it) }
     }
 
@@ -71,10 +71,12 @@ class HistoryFragment :
                 viewModel.mState.collect { state ->
                     when (state) {
                         is MovieState.Loading -> {
+                            adapter.setEmptyView(R.layout.loading_layout_view)
                             Log.d("Rafiur>>>", "Loading...")
                         }
                         is MovieState.Success -> {
                             adapter.setList(state.movies)
+//                            adapter.setEmptyView(R.layout.empty_view)
                         }
                         is MovieState.Error -> {
                             Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
