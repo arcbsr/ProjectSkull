@@ -1,21 +1,10 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="@dimen/dp_24"
-    android:height="@dimen/dp_24"
+    android:width="24dp"
+    android:height="24dp"
+    android:tint="#000000"
     android:viewportWidth="24"
     android:viewportHeight="24">
-
-    <!-- Circular background -->
     <path
-        android:fillColor="@color/white"
-        android:pathData="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2Z" />
-
-    <!-- Head -->
-    <path
-        android:fillColor="@color/gray_20"
-        android:pathData="M12,12c2.21,0 4,-1.79 4,-4s-1.79,-4 -4,-4 -4,1.79 -4,4 1.79,4 4,4z" />
-
-    <!-- Shoulders -->
-    <path
-        android:fillColor="@color/gray_20"
-        android:pathData="M4.6,19.2c1.12,-2.19 3.35,-3.6 6.06,-3.6h2.68c2.71,0 4.94,1.41 6.06,3.6 -2.13,1.83 -4.99,2.8 -8.4,2.8s-6.27,-0.97 -8.4,-2.8z" />
+        android:fillColor="@color/gray_40"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10s10,-4.48 10,-10S17.52,2 12,2zM12,6c1.93,0 3.5,1.57 3.5,3.5S13.93,13 12,13s-3.5,-1.57 -3.5,-3.5S10.07,6 12,6zM12,20c-2.03,0 -4.43,-0.82 -6.14,-2.88C7.55,15.8 9.68,15 12,15s4.45,0.8 6.14,2.12C16.43,19.18 14.03,20 12,20z" />
 </vector>

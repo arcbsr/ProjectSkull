@@ -9,15 +9,17 @@ import androidx.room.Update
 interface ImageItemDao {
 
     @Insert
-    suspend fun insert(item: ImageItem)
+    suspend fun insert(item: ImageItem): Long
 
     @Update
     suspend fun update(item: ImageItem)
 
 
-    @Query("SELECT * FROM image_items ORDER BY createdAt DESC")
+    @Query("SELECT * FROM image_items ORDER BY createdAt ASC")
     suspend fun getAllData(): List<ImageItem>
 
+    @Query("SELECT * FROM image_items WHERE aiAgent = :aiAgent ORDER BY createdAt ASC")
+    suspend fun getImagesByAgent(aiAgent: String): List<ImageItem>
 
     @Query("SELECT * FROM image_items ORDER BY createdAt DESC LIMIT 2")
     suspend fun getRecentData(): List<ImageItem>

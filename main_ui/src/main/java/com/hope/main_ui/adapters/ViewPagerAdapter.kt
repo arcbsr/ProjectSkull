@@ -3,8 +3,6 @@ package com.hope.main_ui.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.alibaba.android.arouter.launcher.ARouter
-import com.hope.main_ui.routers.RoutePath
 import com.hope.main_ui.routers.RouterUtils
 
 class ViewPagerAdapter(
@@ -12,18 +10,28 @@ class ViewPagerAdapter(
     private val titles: List<String>
 ) : FragmentStateAdapter(fragmentActivity) {
 
+    private val searchQuery = arrayOf("Love", "Life", "Song", "Action")
+
+    // Track fragments by position
+    private val fragmentMap = mutableMapOf<Int, Fragment>()
+
     override fun getItemCount(): Int = titles.size
 
     override fun createFragment(position: Int): Fragment {
-        val searchQuery = arrayOf("Love", "Life", "Song", "Action")
-
-//        return MainFragment(searchQuery[position])
-        when (position) {
-            0 -> return RouterUtils().navigateToHomeFragment(query = searchQuery[position])
-            1 -> return RouterUtils().navigateToPreviousChat(query = searchQuery[position])
-            2 -> return RouterUtils().navigateToHomeBackUpFragment(query = searchQuery[position])
-            3 -> return RouterUtils().navigateToHistoryFragment(query = searchQuery[position])
+        val fragment = when (position) {
+            0 -> RouterUtils().navigateToHomeFragment(query = searchQuery[position])
+            1 -> RouterUtils().navigateToPreviousChat(query = searchQuery[position])
+            2 -> RouterUtils().navigateToHomeBackUpFragment(query = searchQuery[position])
+            3 -> RouterUtils().navigateToHistoryFragment(query = searchQuery[position])
+            else -> RouterUtils().navigateToHomeFragment(query = searchQuery[0])
         }
-        return RouterUtils().navigateToHomeFragment(query = searchQuery[position])
+
+        fragmentMap[position] = fragment
+        return fragment
     }
+
+    // Expose a method to get fragment by position
+    fun getFragmentAt(position: Int): Fragment? = fragmentMap[position]
+    fun getAllFragments(): List<Fragment> =
+        (0 until itemCount).mapNotNull { fragmentMap[it] }
 }

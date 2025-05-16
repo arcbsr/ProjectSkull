@@ -6,13 +6,12 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingVertical="@dimen/dp_12">
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_ai_1"
-            android:layout_width="@dimen/dp_56"
-            android:layout_height="@dimen/dp_56"
+            android:layout_width="@dimen/dp_86"
+            android:layout_height="@dimen/dp_86"
             android:layout_margin="@dimen/dp_5"
             app:cardCornerRadius="@dimen/dp_8"
             app:cardElevation="@dimen/dp_6">
@@ -41,7 +40,8 @@
                     android:gravity="center"
                     android:lineSpacingExtra="@dimen/dp_4"
                     android:maxLines="1"
-                    android:text="Riva"
+                    android:paddingVertical="@dimen/dp_5"
+                    tools:text="Riva"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_10"
                     tools:ignore="HardcodedText" />

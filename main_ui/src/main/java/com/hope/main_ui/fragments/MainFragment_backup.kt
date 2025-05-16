@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -70,78 +71,7 @@ class MainFragmentBackup : BaseFragment<HomeViewModel, LayoutMainfragmentBinding
         setupListeners()
         init()
     }
-
-    private lateinit var loginHelper: LoginHelper
     private fun init() {
-        loginHelper = LoginHelper(
-            GoogleAuthProviderStrategy(
-                fragment = this,
-                clientId = "1080800805976-1fd1tf93ejitmllp6e8nug3tqs58bjeh.apps.googleusercontent.com",
-                onLoginSuccess = { user ->
-                    // ✅ Handle successful login
-                    Toast.makeText(requireContext(), "Welcome $user", Toast.LENGTH_SHORT).show()
-                    setupForUserData()
-
-                    val userDb = FirebaseDB("users", UserFirebase::class.java)
-                    val newUser = UserFirebase(name = loginHelper.getCurrentUserDisplayName()!!, age = 25, profilePicture = loginHelper.getCurrentUserPhotoUrl()!!)
-                    loginHelper.getCurrentUserID()?.let { it ->
-                        userDb.create(
-                            id = "$it",
-                            data = newUser,
-                            onSuccess = {
-                                println("User successfully added!")
-                            },
-                            onError = {
-                                println("Failed to add user: $it")
-                            }
-                        )
-                    }
-                },
-                onLoginError = { error ->
-                    // ❌ Handle login error
-                    Toast.makeText(
-                        requireContext(),
-                        "Login failed: ${error.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    setupForUserData()
-                }
-            )
-        )
-
-        mDatabind.loginOut.cardAi1.setOnClickListener {
-            loginHelper.startLogin()
-        }
-        setupForUserData()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        loginHelper.handleLoginResult(requestCode, data)
-    }
-
-    private fun setupForUserData() {
-        val userId = loginHelper.getCurrentUserID()
-        Log.e("User: $userId")
-        if (userId != null) {
-            mDatabind.loginOut.txtAi1.text = loginHelper.getCurrentUserDisplayName()
-            GlideEngine.createGlideEngine()
-                .loadImage(requireContext(), loginHelper.getCurrentUserPhotoUrl()!!, mDatabind.loginOut.imAi1)
-            mDatabind.loginOut.cardAi1.setOnClickListener {
-                loginHelper.signOut {
-                    mDatabind.loginOut.txtAi1.text = "Login"
-                    setupForUserData()
-                }
-            }
-        } else {
-            mDatabind.loginOut.cardAi1.setOnClickListener {
-                loginHelper.startLogin()
-            }
-            Glide.with(requireContext())
-                .load(R.drawable.ic_profile)
-                .into( mDatabind.loginOut.imAi1)
-            mDatabind.loginOut.txtAi1.text = "Log In"
-        }
     }
     private fun setupRecyclerView() {
         mDatabind.chatRecyclerView.adapter = adapter
@@ -168,9 +98,6 @@ class MainFragmentBackup : BaseFragment<HomeViewModel, LayoutMainfragmentBinding
             }
         })
         val aiData = AIData.getRandomThreeAINames()
-        mDatabind.itemAiProfile1.txtAi1.text = aiData[0].name
-        mDatabind.itemAiProfile2.txtAi1.text = aiData[1].name
-        mDatabind.itemAiProfile3.txtAi1.text = aiData[2].name
 
     }
 
@@ -306,6 +233,8 @@ class MainFragmentBackup : BaseFragment<HomeViewModel, LayoutMainfragmentBinding
                             mDatabind.lottieSave.visibility = View.GONE
                             mDatabind.btnSend.visibility = View.VISIBLE
                         }
+
+                        else -> {}
                     }
                 }
             }

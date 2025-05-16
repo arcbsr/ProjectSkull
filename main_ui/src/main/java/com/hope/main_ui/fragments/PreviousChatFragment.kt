@@ -1,17 +1,20 @@
 package com.hope.main_ui.fragments
 
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.hope.common.log.Log
 import com.hope.db_libs.dbmanager.DatabaseManager
 import com.hope.db_libs.dbmanager.ImageItem
+import com.hope.firebase.database.aicreator.Models
 import com.hope.lib_mvvm.fragment.BaseFragment
 import com.hope.main_ui.adapters.GridSpacingItemDecoration
 import com.hope.main_ui.adapters.ImageGridAdapter
 import com.hope.main_ui.databinding.LayoutHistoryfragmentBinding
 import com.hope.main_ui.routers.RoutePath
+import com.hope.main_ui.utils.GlideEngine
 import com.hope.main_ui.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -32,15 +35,22 @@ class PreviousChatFragment : BaseFragment<HomeViewModel, LayoutHistoryfragmentBi
     override fun initViews() {
         ARouter.getInstance().inject(this)
         setupRecyclerView()
-        loadInitialData()
         setupListeners()
+        setAiProfile()
     }
 
     private fun setupRecyclerView() {
+        val spanCount = 3
+        adapter.setSpanSizeLookup(spanCount)
         mDatabind.recyclerView.adapter = adapter
+        mDatabind.recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
         val spacingInPx = (16 * resources.displayMetrics.density).toInt()
         mDatabind.recyclerView.addItemDecoration(
-            GridSpacingItemDecoration(spanCount = 2, spacing = spacingInPx, includeEdge = true)
+            GridSpacingItemDecoration(
+                spanCount = spanCount,
+                spacing = spacingInPx,
+                includeEdge = true
+            )
         )
 
         adapter.setOnInviteClickListener(object : ImageGridAdapter.OnEventClickListener {
@@ -60,9 +70,10 @@ class PreviousChatFragment : BaseFragment<HomeViewModel, LayoutHistoryfragmentBi
         })
     }
 
-    private fun loadInitialData() {
+    private fun loadInitialData(aiAgent: String = "") {
         lifecycleScope.launch {
-            val updatedList = DatabaseManager.imageItemDao().getAllData()
+            val updatedList = DatabaseManager.imageItemDao().getImagesByAgent(aiAgent)
+            Log.d("PreviousChatFragment", "Updated list size: $updatedList")
             adapter.setNewInstance(updatedList.toMutableList())
         }
     }
@@ -74,5 +85,13 @@ class PreviousChatFragment : BaseFragment<HomeViewModel, LayoutHistoryfragmentBi
 
     override fun initObservers() {
 
+    }
+
+    fun setAiProfile(aiProfile: Models.AiProfile? = null) {
+        if (aiProfile == null) {
+            loadInitialData()
+            return
+        }
+        loadInitialData(aiProfile?.name ?: "")
     }
 }

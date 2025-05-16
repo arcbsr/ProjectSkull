@@ -1,5 +1,7 @@
 package com.hope.firebase.auth
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -13,7 +15,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class GoogleAuthProviderStrategy(
-    private val fragment: Fragment,
+    private val context: Activity,
     private val clientId: String,
     private val onLoginSuccess: (String) -> Unit,
     private val onLoginError: (Exception) -> Unit
@@ -28,12 +30,12 @@ class GoogleAuthProviderStrategy(
             .requestIdToken(clientId)
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(fragment.requireContext(), gso)
+        googleSignInClient = GoogleSignIn.getClient(context, gso)
     }
 
     override fun startLogin() {
         val signInIntent = googleSignInClient.signInIntent
-        fragment.startActivityForResult(signInIntent, RC_SIGN_IN)
+        context.startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     override fun handleLoginResult(requestCode: Int, data: Intent?) {

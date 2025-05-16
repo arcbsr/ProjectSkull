@@ -30,7 +30,6 @@ class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseView
 //    private val prompt = RequestBody.create(MediaType.parse("text/plain"), promptText)
     private val _state = MutableStateFlow<HomePageState>(HomePageState.Ideal)
     val mState: StateFlow<HomePageState> = _state
-
     fun generateImage(bitmap: Bitmap, promptText: String, context: Context) {
         val tempFile = createTempFile(bitmap, context)
         val imagePart = MultipartBody.Part.createFormData(
@@ -59,11 +58,11 @@ class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseView
                     }
 
                     is ResponseWrapper.Success -> {
-                        delay(600)
                         if (it.value?.process_id == null || it.value.process_id.isEmpty()) {
                             _state.value = HomePageState.EndOfSearch
                             Log.w("Rafiur>>", "process_id: ${it.value.process_id}")
                         } else {
+                            delay(RETRY_DELAY)
                             //TODO: handle the response
                             Log.w("Rafiur>>", "process_id: ${it.value.process_id}")
                             _state.value = HomePageState.Success(it.value.process_id)
@@ -86,6 +85,7 @@ class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseView
             useCase.getImageProcessingResponse(processId = processId, authorization = token)
                 .onStart {}.catch {
                     _state.value = HomePageState.Error("Unknown")
+                    Log.w("Rafiur333>>", "Error: Unknown")
                 }.collect {
                     when (it) {
                         is ResponseWrapper.GenericError -> {
@@ -97,21 +97,20 @@ class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseView
 
                         ResponseWrapper.NetworkError -> {
                             _state.value = HomePageState.Error("Network Error")
-                            Log.w("Rafiur>>", "Network Error")
+                            Log.w("Rafiur333>>", "Network Error")
                         }
 
                         is ResponseWrapper.Success -> {
-                            delay(600)
                             if (it.value?.process_id == null || it.value.process_id.isEmpty()) {
                                 _state.value = HomePageState.EndOfSearch
-                                Log.w("Rafiur>>", "process_id: ${it.value.process_id}")
                             } else {
                                 //TODO: handle the response
-                                Log.w("Rafiur>>", "process_id: ${it.value.process_id}")
+                                Log.w("Rafiur333>>", "process_id: ${it.value.process_id}")
                                 if (it.value.result == null || it.value.result.output == null || it.value.result.output.isEmpty()) {
-                                    _state.value = HomePageState.EndOfSearch
+                                    delay(RETRY_DELAY)
+                                    _state.value = HomePageState.RetryImageLoading(processId, item)
                                 } else {
-                                    Log.w("Rafiur>>", "process_id: ${it.value.result.output}")
+                                    Log.w("Rafiur333>>", "process_id: ${it.value.result.output}")
                                     _state.value =
                                         HomePageState.ImageData(it.value.result.output[0], item)
                                 }
@@ -153,7 +152,7 @@ class HomeViewModel @Inject constructor(private val useCase: UseCase) : BaseView
                     }
 
                     is ResponseWrapper.Success -> {
-                        delay(600)
+                        delay(RETRY_DELAY)
                         if (it.value?.process_id == null || it.value.process_id.isEmpty()) {
                             _state.value = HomePageState.EndOfSearch
                             Log.w("Rafiur>>", "process_id: ${it.value.process_id}")
@@ -181,6 +180,7 @@ sealed class HomePageState {
     object Loading : HomePageState()
     object EndOfSearch : HomePageState()
     data class Success(val processID: String) : HomePageState()
+    data class RetryImageLoading(val processID: String, val item: ImageItem) : HomePageState()
     data class ImageData(val imageLink: String, val item: ImageItem) : HomePageState()
     data class Error(val message: String) : HomePageState()
     object Ideal : HomePageState()

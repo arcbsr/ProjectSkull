@@ -16,7 +16,10 @@ import com.lxj.xpopup.util.SmartGlideImageLoader
 
 class ImageGridAdapter :
     BaseViewBindingAdapter<ImageItem, ImageGridAdapter.ViewHolder>(R.layout.item_image) {
-
+    private var spanCount = 1
+    fun setSpanSizeLookup(spanCount: Int) {
+        this.spanCount = spanCount
+    }
 
     private lateinit var onEventClickListener: OnEventClickListener
     fun setOnInviteClickListener(onInviteClickListener: OnEventClickListener) {
@@ -32,14 +35,21 @@ class ImageGridAdapter :
     override fun convert(holder: ViewHolder, item: ImageItem) {
         item.let {
             holder.viewBind.apply {
+                if (spanCount > 1) {
+                    layoutChatBubble.visibility = View.GONE
+                } else {
+                    layoutChatBubble.visibility = View.VISIBLE
+                }
                 val message = it
                 chatBubble.text = it.prompt
                 if (it.imageUrl.isNullOrEmpty()) {
-                    imageCard.visibility = View.GONE
+                    imageItem.visibility = View.GONE
                     imReload.visibility = View.VISIBLE
+                    imReload2.visibility = View.VISIBLE
                 } else {
-                    imageCard.visibility = View.VISIBLE
+                    imageItem.visibility = View.VISIBLE
                     imReload.visibility = View.GONE
+                    imReload2.visibility = View.GONE
                     Glide
                         .with(context)
                         .load(it.imageUrl)
@@ -56,7 +66,7 @@ class ImageGridAdapter :
                         viewerPopup.setXPopupImageLoader(SmartGlideImageLoader())
 //                viewerPopup.isShowIndicator(false);//是否显示页码指示器
 //                viewerPopup.isShowPlaceholder(false);//是否显示白色占位块
-                viewerPopup.isShowSaveButton(false);//是否显示保存按钮
+                        viewerPopup.isShowSaveButton(false);//是否显示保存按钮
 //                viewerPopup.isShowIndicator(false);//是否显示页码指示器
 //                viewerPopup.isShowPlaceholder(false);//是否显示白色占位块
 //                viewerPopup.isShowSaveButton(false);//是否显示保存按钮
@@ -70,7 +80,7 @@ class ImageGridAdapter :
                     .centerCrop()
                     .placeholder(com.hope.resources.R.drawable.ic_profile)
                     .into(chatBubbleIcon)
-                imReload.setOnClickListener { _ ->
+                imReload2.setOnClickListener { _ ->
                     onEventClickListener.onEventClickReload(holder.layoutPosition, item)
                 }
                 imDelete.setOnClickListener { _ ->

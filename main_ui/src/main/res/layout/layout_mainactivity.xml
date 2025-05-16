@@ -8,13 +8,12 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <RelativeLayout
-            android:background="@color/bg_light_gray"
             android:id="@+id/rl_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="@dimen/dp_20"
-            android:padding="@dimen/dp_10"
+            android:background="@color/bg_light_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,15 +25,58 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
+                android:paddingHorizontal="@dimen/dp_10"
                 android:text="Hello, Good Morning..."
                 android:textSize="@dimen/sp_22" />
+
+            <HorizontalScrollView
+                android:id="@+id/ai_profiles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_main_hello"
+                android:layout_marginTop="@dimen/dp_12">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/dp_10">
+                    <!-- Google Sign-In Button -->
+                    <include
+                        android:visibility="gone"
+                        android:id="@+id/login_out"
+                        layout="@layout/login_header" />
+                    <!-- Image Card -->
+                    <LinearLayout
+                        android:id="@+id/ai_profiles_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <include
+                            android:id="@+id/item_ai_profile_1"
+                            layout="@layout/item_ai_profle" />
+
+                        <include
+                            android:id="@+id/item_ai_profile_2"
+                            layout="@layout/item_ai_profle" />
+
+                        <include
+                            android:id="@+id/item_ai_profile_3"
+                            layout="@layout/item_ai_profle" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </HorizontalScrollView>
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/tab_bar_layout"
-                android:layout_below="@id/tv_main_hello"
+                android:layout_below="@id/ai_profiles"
                 android:layout_marginVertical="@dimen/dp_4" />
 
             <include
