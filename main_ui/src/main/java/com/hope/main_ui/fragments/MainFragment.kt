@@ -338,7 +338,7 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
             mDatabind.aiImageView.setImageResource(0)
         }
         mDatabind.aiName.setOnClickListener {
-            mDatabind.aiName.maxLines = if (mDatabind.aiName.maxLines == 4) 2 else 6
+            mDatabind.aiName.maxLines = if (mDatabind.aiName.maxLines >2) 2 else 6
         }
     }
 
