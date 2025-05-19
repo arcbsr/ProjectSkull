@@ -53,6 +53,7 @@ ext {
             refresh_footer_classics         : ('com.scwang.smart:refresh-footer-classics:2.0.3'),
             refresh_layout_horizontal       : ('com.scwang.smart:refresh-layout-horizontal:2.0.0'),
             nice_image_view                 : "com.github.SheHuan:NiceImageView:1.0.5",
+            material_icons_extended         : "androidx.compose.material:material-icons-extended:1.6.0",
 
             lib_resources                   : ':resources',
             main_ui                         : ':main_ui',

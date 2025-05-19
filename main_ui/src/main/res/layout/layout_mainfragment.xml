@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="@dimen/dp_5"
-                    android:gravity="center_vertical">
+                    android:gravity="center">
 
                     <com.hope.resources.shape.RoundImageView
                         android:id="@+id/aiImageView"
@@ -37,6 +37,7 @@
                         android:layout_height="@dimen/dp_24"
                         android:layout_marginEnd="12dp"
                         android:scaleType="centerCrop"
+                        android:visibility="gone"
                         android:src="@drawable/ic_profile"
                         app:rv_radius="@dimen/dp_66"/>
 

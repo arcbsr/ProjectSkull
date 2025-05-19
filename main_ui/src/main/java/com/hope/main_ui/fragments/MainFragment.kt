@@ -26,6 +26,8 @@ import com.hope.lib_mvvm.fragment.BaseFragment
 import com.hope.main_ui.adapters.GridSpacingItemDecoration
 import com.hope.main_ui.adapters.ImageGridAdapter
 import com.hope.main_ui.databinding.LayoutMainfragmentBinding
+import com.hope.main_ui.dialogs.CustomBubbleAttachPopup
+import com.hope.main_ui.dialogs.CustomBubbleAttachPopupArrow
 import com.hope.main_ui.dialogs.ProgressLoadingDialog
 import com.hope.main_ui.routers.RoutePath
 import com.hope.main_ui.utils.CropEngine
@@ -69,8 +71,20 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
 
     private fun init() {
         setAiProfile()
-    }
 
+    }
+private fun showBubbleText(hintText : String, anchor:View, onClick: () -> Unit) {
+    XPopup.Builder(context)
+        .atView(anchor) // anchor the bubble to this view
+        .hasShadowBg(false)
+        .hasStatusBarShadow(false)
+        .isRequestFocus(false)
+        .offsetY(8)
+        .asCustom(CustomBubbleAttachPopupArrow(requireContext(),hintText) {
+            onClick()
+        })
+        .show()
+}
     private fun setupRecyclerView() {
         mDatabind.chatRecyclerView.adapter = adapter
         val spacingInPx = (16 * resources.displayMetrics.density).toInt()
@@ -108,7 +122,13 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
     }
 
     private fun setupListeners() {
-        mDatabind.chatBubbleIcon.setOnClickListener { requestImagePermissionAndPick() }
+        mDatabind.chatBubbleIcon.setOnClickListener {
+
+//            requestImagePermissionAndPick()
+            showBubbleText("👋 Tap here to explore more options!", it) {
+                requestImagePermissionAndPick()
+            }
+        }
 
         mDatabind.btnSend.setOnClickListener {
             if (mDatabind.editTextMessage.text?.trim().toString().isEmpty()) {
@@ -332,16 +352,28 @@ class MainFragment : BaseFragment<HomeViewModel, LayoutMainfragmentBinding>() {
                 aiProfile.imageUrl,
                 mDatabind.aiImageView
             )
-            mDatabind.aiName.text = generateAiIntroduction(aiProfile)
+            mDatabind.aiName.text = generateAiIntroductionBrief(aiProfile)
         } else {
-            mDatabind.aiName.text = generateAiIntroduction()
+            mDatabind.aiName.text = generateAiIntroductionBrief()
             mDatabind.aiImageView.setImageResource(0)
         }
-        mDatabind.aiName.setOnClickListener {
-            mDatabind.aiName.maxLines = if (mDatabind.aiName.maxLines >2) 2 else 6
+        mDatabind.aiIntroLayout.setOnClickListener {
+//            mDatabind.aiName.maxLines = if (mDatabind.aiName.maxLines >2) 2 else 6
+            showBubbleText(generateAiIntroduction(aiProfile), mDatabind.aiImageView){
+
+            }
         }
     }
-
+    private fun generateAiIntroductionBrief(aiProfile: Models.AiProfile? = null): String {
+        return buildString {
+            if (aiProfile != null) {
+                append("👋 Hi, I'm *${aiProfile.name}* ")
+            } else {
+                append("🚀 Ready to chat?")
+                append("\n🤖 Please select an AI agent from above to begin your journey.")
+            }
+        }
+    }
     private fun generateAiIntroduction(aiProfile: Models.AiProfile? = null): String {
         return buildString {
             if (aiProfile != null) {

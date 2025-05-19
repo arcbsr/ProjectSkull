@@ -9,7 +9,9 @@ class Models {
         val type: String = "",              // e.g., Assistant, Mentor, etc.
         val personality: String = "",       // Optional
         val age: Int = 0,                   // Optional
-        val description: String = ""        // Optional
+        val description: String = "",        // Optional
+        var isSelected: Boolean = false
+
     )
 
     companion object {

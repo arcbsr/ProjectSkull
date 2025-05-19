@@ -87,7 +87,7 @@ class ImageGridAdapter :
                     onEventClickListener.onEventClickDelete(holder.layoutPosition, item)
                 }
                 holder.itemView.setOnClickListener { _ ->
-                    onEventClickListener.onEventClick(holder.layoutPosition, item)
+//                    onEventClickListener.onEventClick(holder.layoutPosition, item)
                 }
             }
         }
@@ -103,6 +103,16 @@ class ImageGridAdapter :
                 from!!, parent, false
             )
         )
+    }
+
+    fun addDataC(toMutableList: MutableList<ImageItem>) {
+        if(toMutableList.size > 0) {
+            setNewInstance(toMutableList)
+        }else {
+            data.clear()
+            setEmptyView(R.layout.empty_view)
+            notifyDataSetChanged()
+        }
     }
 
     inner class ViewHolder(viewBind: ItemImageBinding) :

@@ -6,10 +6,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.hope.common.log.Log
 import com.hope.db_libs.dbmanager.DatabaseManager
+import com.hope.db_libs.dbmanager.ImageItem
 import com.hope.firebase.auth.GoogleAuthProviderStrategy
 import com.hope.firebase.auth.LoginHelper
 import com.hope.firebase.database.FirebaseDB
@@ -18,12 +21,16 @@ import com.hope.firebase.database.aicreator.Models
 import com.hope.lib_mvvm.MainViewModel
 import com.hope.lib_mvvm.activity.BaseVmDbActivity
 import com.hope.main_ui.R
+import com.hope.main_ui.adapters.AIProfilesAdapter
+import com.hope.main_ui.adapters.ImageGridAdapter
 import com.hope.main_ui.adapters.ViewPagerAdapter
 import com.hope.main_ui.databinding.LayoutMainactivityBinding
+import com.hope.main_ui.dialogs.DialogUtils
 import com.hope.main_ui.fragments.MainFragment
 import com.hope.main_ui.fragments.PreviousChatFragment
 import com.hope.main_ui.utils.GlideEngine
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 @AndroidEntryPoint
@@ -237,62 +244,80 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
         }
     }
 
+    val adapter = AIProfilesAdapter()
     private fun fetchAllAiProfiles() {
         Log.d("Rafiur33>>", "Fetching AI profiles...")
         val db = FirebaseDB("ai_profiles", Models.AiProfile::class.java)
         db.readAll(
             onSuccess = { profiles ->
-                var count = 0
-                profiles.forEach {
-                    val aiProfile = it
-                    Log.d("Rafiur33>>", "AI Profile: $it")
-                    when (count) {
-                        0 -> {
-                            mDatabind.itemAiProfile1.root.visibility = View.VISIBLE
-                            mDatabind.itemAiProfile1.txtAi1.text = it.name
-                            GlideEngine.createGlideEngine().loadImage(
-                                this,
-                                it.imageUrl,
-                                mDatabind.itemAiProfile1.imAi1
-                            )
-                            mDatabind.itemAiProfile1.root.setOnClickListener {
-                                aiSelector(mDatabind.itemAiProfile1.txtAi1, aiProfile)
-                            }
-                        }
+                mDatabind.horizontalRecyclerView.layoutManager =
+                    LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+                mDatabind.horizontalRecyclerView.adapter = adapter
+                adapter.setNewInstance(profiles.toMutableList())
+                adapter.setOnInviteClickListener(object : AIProfilesAdapter.OnEventClickListener {
+                    override fun onEventClickReload(position: Int, item: Models.AiProfile) {
 
-                        1 -> {
-                            mDatabind.itemAiProfile2.root.visibility = View.VISIBLE
-                            mDatabind.itemAiProfile2.txtAi1.text = it.name
-                            GlideEngine.createGlideEngine().loadImage(
-                                this,
-                                it.imageUrl,
-                                mDatabind.itemAiProfile2.imAi1
-                            )
-                            mDatabind.itemAiProfile2.root.setOnClickListener {
-                                aiSelector(mDatabind.itemAiProfile2.txtAi1, aiProfile)
-                            }
-                        }
-
-                        2 -> {
-                            mDatabind.itemAiProfile3.root.visibility = View.VISIBLE
-                            mDatabind.itemAiProfile3.txtAi1.text = it.name
-                            GlideEngine.createGlideEngine().loadImage(
-                                this,
-                                it.imageUrl,
-                                mDatabind.itemAiProfile3.imAi1
-                            )
-                            mDatabind.itemAiProfile3.root.setOnClickListener {
-                                aiSelector(mDatabind.itemAiProfile3.txtAi1, aiProfile)
-                            }
-                        }
-
-                        else -> {
-                            // Handle more profiles if needed
-                        }
                     }
-                    count++
-                }
-                aiSelector()
+
+                    override fun onEventClickDelete(position: Int, item: Models.AiProfile) {
+
+                    }
+
+                    override fun onEventClick(position: Int, item: Models.AiProfile) {
+                        aiSelector(selectedAiProfile = item)
+                    }
+                })
+//                var count = 0
+//                profiles.forEach {
+//                    val aiProfile = it
+//                    Log.d("Rafiur33>>", "AI Profile: $it")
+//                    when (count) {
+//                        0 -> {
+//                            mDatabind.itemAiProfile1.root.visibility = View.VISIBLE
+//                            mDatabind.itemAiProfile1.txtAi1.text = it.name
+//                            GlideEngine.createGlideEngine().loadImage(
+//                                this,
+//                                it.imageUrl,
+//                                mDatabind.itemAiProfile1.imAi1
+//                            )
+//                            mDatabind.itemAiProfile1.root.setOnClickListener {
+//                                aiSelector(mDatabind.itemAiProfile1.txtAi1, aiProfile)
+//                            }
+//                        }
+//
+//                        1 -> {
+//                            mDatabind.itemAiProfile2.root.visibility = View.VISIBLE
+//                            mDatabind.itemAiProfile2.txtAi1.text = it.name
+//                            GlideEngine.createGlideEngine().loadImage(
+//                                this,
+//                                it.imageUrl,
+//                                mDatabind.itemAiProfile2.imAi1
+//                            )
+//                            mDatabind.itemAiProfile2.root.setOnClickListener {
+//                                aiSelector(mDatabind.itemAiProfile2.txtAi1, aiProfile)
+//                            }
+//                        }
+//
+//                        2 -> {
+//                            mDatabind.itemAiProfile3.root.visibility = View.VISIBLE
+//                            mDatabind.itemAiProfile3.txtAi1.text = it.name
+//                            GlideEngine.createGlideEngine().loadImage(
+//                                this,
+//                                it.imageUrl,
+//                                mDatabind.itemAiProfile3.imAi1
+//                            )
+//                            mDatabind.itemAiProfile3.root.setOnClickListener {
+//                                aiSelector(mDatabind.itemAiProfile3.txtAi1, aiProfile)
+//                            }
+//                        }
+//
+//                        else -> {
+//                            // Handle more profiles if needed
+//                        }
+//                    }
+//                    count++
+//                }
+//                aiSelector()
             },
             onError = { e ->
                 Log.e("Rafiur33>>", "Error fetching AI profiles: ${e.message}")
@@ -307,6 +332,8 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
         mDatabind.itemAiProfile1.txtAi1.setBackgroundColor(resources.getColor(com.hope.resources.R.color.orange))
         mDatabind.itemAiProfile2.txtAi1.setBackgroundColor(resources.getColor(com.hope.resources.R.color.orange))
         mDatabind.itemAiProfile3.txtAi1.setBackgroundColor(resources.getColor(com.hope.resources.R.color.orange))
+        mDatabind.chattingHeader.root.visibility = View.GONE
+        mDatabind.aiProfiles.visibility = View.VISIBLE
         if (selectedProfile != null) {
             if (selectedProfile.isSelected) {
                 mDatabind.itemAiProfile1.txtAi1.isSelected = false
@@ -315,12 +342,52 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
                 aiSelector()
                 return
             }
+
             mDatabind.itemAiProfile1.txtAi1.isSelected = false
             mDatabind.itemAiProfile2.txtAi1.isSelected = false
             mDatabind.itemAiProfile3.txtAi1.isSelected = false
             selectedProfile?.isSelected = true
             selectedProfile?.setBackgroundColor(resources.getColor(com.hope.resources.R.color.green))
 
+        } else {
+            mDatabind.itemAiProfile1.txtAi1.isSelected = false
+            mDatabind.itemAiProfile2.txtAi1.isSelected = false
+            mDatabind.itemAiProfile3.txtAi1.isSelected = false
+        }
+
+        if (selectedAiProfile != null) {
+            mDatabind.chattingHeader.root.visibility = View.VISIBLE
+//            mDatabind.aiProfiles.visibility = View.GONE
+            selectedAiProfile?.imageUrl?.let {
+                GlideEngine.createGlideEngine().loadImage(
+                    this, it,
+                    mDatabind.chattingHeader.profileImage
+                )
+            }
+            mDatabind.chattingHeader.btnInfo.setOnClickListener {
+                DialogUtils.showBubbleText(
+                    context = this,
+                    hintText = DialogUtils.generateAiIntroduction(selectedAiProfile),
+                    anchor = mDatabind.chattingHeader.btnInfo
+                ) {
+
+                }
+            }
+            mDatabind.chattingHeader.userName.text = selectedAiProfile.name
+            mDatabind.chattingHeader.userStatus.text = selectedAiProfile.personality
+            mDatabind.chattingHeader.btnBack.setOnClickListener {
+                if (mDatabind.viewPager.currentItem == 0) {
+                    aiSelector()
+                } else {
+                    mDatabind.viewPager.currentItem = 0
+                }
+
+            }
+        } else {
+            adapter.removeSelection()
+        }
+        mDatabind.chattingHeader.btnGallery.setOnClickListener {
+            mDatabind.viewPager.currentItem = 1
         }
 //        selectedAiProfile = aiProfile
         for (fragment in viewPagerAdapter.getAllFragments()) {

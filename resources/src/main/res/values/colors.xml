@@ -93,4 +93,5 @@
 
     <!--    common colors  -->
     <color name="bg_light_gray">#F5F5F5</color> <!-- Light neutral gray -->
+    <color name="bg_bubble_chat_color">#E0F7FA</color> <!-- Light neutral gray -->
 </resources>

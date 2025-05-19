@@ -10,6 +10,7 @@ import com.hope.db_libs.dbmanager.DatabaseManager
 import com.hope.db_libs.dbmanager.ImageItem
 import com.hope.firebase.database.aicreator.Models
 import com.hope.lib_mvvm.fragment.BaseFragment
+import com.hope.main_ui.R
 import com.hope.main_ui.adapters.GridSpacingItemDecoration
 import com.hope.main_ui.adapters.ImageGridAdapter
 import com.hope.main_ui.databinding.LayoutHistoryfragmentBinding
@@ -39,8 +40,7 @@ class PreviousChatFragment : BaseFragment<HomeViewModel, LayoutHistoryfragmentBi
         setAiProfile()
     }
 
-    private fun setupRecyclerView() {
-        val spanCount = 3
+    private fun setupRecyclerView(spanCount: Int = 1) {
         adapter.setSpanSizeLookup(spanCount)
         mDatabind.recyclerView.adapter = adapter
         mDatabind.recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
@@ -73,8 +73,15 @@ class PreviousChatFragment : BaseFragment<HomeViewModel, LayoutHistoryfragmentBi
     private fun loadInitialData(aiAgent: String = "") {
         lifecycleScope.launch {
             val updatedList = DatabaseManager.imageItemDao().getImagesByAgent(aiAgent)
-            Log.d("PreviousChatFragment", "Updated list size: $updatedList")
-            adapter.setNewInstance(updatedList.toMutableList())
+            Log.d("PreviousChatFragment", "Updated list size: ${updatedList.size}")
+//            if (updatedList.isEmpty() || updatedList.size == 0) {
+//                adapter.data.clear()
+//                adapter.setEmptyView(R.layout.empty_view)
+//                return@launch
+//            }
+//            adapter.setNewInstance(updatedList.toMutableList())
+            val updList = updatedList.toMutableList()
+            adapter.addDataC(updList)
         }
     }
 
