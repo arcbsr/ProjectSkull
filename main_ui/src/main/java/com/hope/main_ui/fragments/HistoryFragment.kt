@@ -1,7 +1,6 @@
 package com.hope.main_ui.fragments
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,17 +11,17 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.hope.main_ui.routers.RoutePath
+import com.hope.common.log.Log
 import com.hope.lib_mvvm.fragment.BaseFragment
 import com.hope.main_ui.R
-import com.hope.main_ui.adapters.CustomBaseQuickAdapter
 import com.hope.main_ui.adapters.MovieAdapter
 import com.hope.main_ui.databinding.LayoutHistoryfragmentBinding
-import com.hope.main_ui.databinding.LayoutMainfragmentBinding
+import com.hope.main_ui.routers.RoutePath
 import com.hope.main_ui.viewmodels.MovieListViewModel
 import com.hope.main_ui.viewmodels.MovieState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 @Route(path = RoutePath.HomeFragment.HISTORY)
 @AndroidEntryPoint
 class HistoryFragment :
@@ -74,13 +73,16 @@ class HistoryFragment :
                             adapter.setEmptyView(R.layout.loading_layout_view)
                             Log.d("Rafiur>>>", "Loading...")
                         }
+
                         is MovieState.Success -> {
                             adapter.setList(state.movies)
 //                            adapter.setEmptyView(R.layout.empty_view)
                         }
+
                         is MovieState.Error -> {
                             Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
                         }
+
                         is MovieState.EndOfSearch -> {
                             Log.d("Rafiur>>>", "End of search")
 
