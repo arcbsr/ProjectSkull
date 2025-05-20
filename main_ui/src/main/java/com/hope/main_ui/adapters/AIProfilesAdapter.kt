@@ -43,7 +43,7 @@ class AIProfilesAdapter :
                 txtAi1.setBackgroundColor(context.getColor(com.hope.resources.R.color.orange))
             }
             holder.itemView.setOnClickListener {
-                Log.d("AIProfilesAdapter", "convert: $item")
+//                Log.d("AIProfilesAdapter", "convert: $item")
                 val position = holder.adapterPosition
                 onEventClickListener.onEventClick(position, item)
                 for (item in data) {
@@ -52,6 +52,7 @@ class AIProfilesAdapter :
                 }
                 item.isSelected = true
                 notifyDataSetChanged()
+//                setDefaultAI(position = position)
             }
         }
     }
@@ -74,6 +75,16 @@ class AIProfilesAdapter :
             item.isSelected = false
         }
         notifyDataSetChanged()
+    }
+
+    fun setDefaultAI(position:Int = 0) {
+        for (item in data) {
+            Log.d("AIProfilesAdapter", "convert: ${item.isSelected}")
+            item.isSelected = false
+        }
+        data[0].isSelected = true
+        notifyDataSetChanged()
+        onEventClickListener.onEventClick(0, data[0])
     }
 
     inner class ViewHolder(viewBind: ItemAiProfleBinding) :

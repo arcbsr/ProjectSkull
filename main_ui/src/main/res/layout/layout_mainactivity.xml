@@ -41,6 +41,7 @@
 
 
                 <include
+                    android:visibility="gone"
                     android:id="@+id/chatting_header"
                     layout="@layout/layout_chatting_header"
                     android:layout_width="match_parent"
@@ -63,10 +64,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true" />
             <HorizontalScrollView
-                android:visibility="gone"
-                android:layout_above="@id/horizontalRecyclerView"
+                android:layout_centerHorizontal="true"
                 android:id="@+id/ai_profiles"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -78,29 +78,7 @@
                     <!-- Google Sign-In Button -->
                     <include
                         android:id="@+id/login_out"
-                        layout="@layout/login_header"
-                        android:visibility="gone" />
-                    <!-- Image Card -->
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/ai_profiles_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <include
-                            android:id="@+id/item_ai_profile_1"
-                            layout="@layout/item_ai_profle" />
-
-                        <include
-                            android:id="@+id/item_ai_profile_2"
-                            layout="@layout/item_ai_profle" />
-
-                        <include
-                            android:id="@+id/item_ai_profile_3"
-                            layout="@layout/item_ai_profle" />
-
-                    </LinearLayout>
+                        layout="@layout/login_header" />
                 </LinearLayout>
 
             </HorizontalScrollView>

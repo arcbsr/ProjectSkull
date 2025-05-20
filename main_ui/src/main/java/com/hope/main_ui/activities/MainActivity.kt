@@ -6,13 +6,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.hope.common.log.Log
 import com.hope.db_libs.dbmanager.DatabaseManager
-import com.hope.db_libs.dbmanager.ImageItem
 import com.hope.firebase.auth.GoogleAuthProviderStrategy
 import com.hope.firebase.auth.LoginHelper
 import com.hope.firebase.database.FirebaseDB
@@ -22,7 +20,6 @@ import com.hope.lib_mvvm.MainViewModel
 import com.hope.lib_mvvm.activity.BaseVmDbActivity
 import com.hope.main_ui.R
 import com.hope.main_ui.adapters.AIProfilesAdapter
-import com.hope.main_ui.adapters.ImageGridAdapter
 import com.hope.main_ui.adapters.ViewPagerAdapter
 import com.hope.main_ui.databinding.LayoutMainactivityBinding
 import com.hope.main_ui.dialogs.DialogUtils
@@ -30,7 +27,6 @@ import com.hope.main_ui.fragments.MainFragment
 import com.hope.main_ui.fragments.PreviousChatFragment
 import com.hope.main_ui.utils.GlideEngine
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import java.util.Calendar
 
 @AndroidEntryPoint
@@ -175,6 +171,8 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
                                 Log.d("Rafiur>>>", "Failed to add user: $it")
                             }
                         )
+
+                        mDatabind.aiProfiles.visibility = View.GONE
                     }
                 },
                 onLoginError = { error ->
@@ -192,14 +190,10 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
     }
 
     private fun setupForUserData() {
-        mDatabind.itemAiProfile1.root.visibility = View.GONE
-        mDatabind.itemAiProfile2.root.visibility = View.GONE
-        mDatabind.itemAiProfile3.root.visibility = View.GONE
         val userId = loginHelper.getCurrentUserID()
         Log.e("UserID: $userId")
         if (userId != null) {
             fetchAllAiProfiles()
-            mDatabind.loginOut.root.visibility = View.GONE
             mDatabind.loginOut.root.setOnClickListener {
                 loginHelper.signOut {
                     setupForUserData()
@@ -217,7 +211,7 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
                 }
             )
         } else {
-            mDatabind.loginOut.root.visibility = View.VISIBLE
+            mDatabind.aiProfiles.visibility = View.VISIBLE
             mDatabind.loginOut.root.setOnClickListener {
                 loginHelper.startLogin()
             }
@@ -267,57 +261,7 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
                         aiSelector(selectedAiProfile = item)
                     }
                 })
-//                var count = 0
-//                profiles.forEach {
-//                    val aiProfile = it
-//                    Log.d("Rafiur33>>", "AI Profile: $it")
-//                    when (count) {
-//                        0 -> {
-//                            mDatabind.itemAiProfile1.root.visibility = View.VISIBLE
-//                            mDatabind.itemAiProfile1.txtAi1.text = it.name
-//                            GlideEngine.createGlideEngine().loadImage(
-//                                this,
-//                                it.imageUrl,
-//                                mDatabind.itemAiProfile1.imAi1
-//                            )
-//                            mDatabind.itemAiProfile1.root.setOnClickListener {
-//                                aiSelector(mDatabind.itemAiProfile1.txtAi1, aiProfile)
-//                            }
-//                        }
-//
-//                        1 -> {
-//                            mDatabind.itemAiProfile2.root.visibility = View.VISIBLE
-//                            mDatabind.itemAiProfile2.txtAi1.text = it.name
-//                            GlideEngine.createGlideEngine().loadImage(
-//                                this,
-//                                it.imageUrl,
-//                                mDatabind.itemAiProfile2.imAi1
-//                            )
-//                            mDatabind.itemAiProfile2.root.setOnClickListener {
-//                                aiSelector(mDatabind.itemAiProfile2.txtAi1, aiProfile)
-//                            }
-//                        }
-//
-//                        2 -> {
-//                            mDatabind.itemAiProfile3.root.visibility = View.VISIBLE
-//                            mDatabind.itemAiProfile3.txtAi1.text = it.name
-//                            GlideEngine.createGlideEngine().loadImage(
-//                                this,
-//                                it.imageUrl,
-//                                mDatabind.itemAiProfile3.imAi1
-//                            )
-//                            mDatabind.itemAiProfile3.root.setOnClickListener {
-//                                aiSelector(mDatabind.itemAiProfile3.txtAi1, aiProfile)
-//                            }
-//                        }
-//
-//                        else -> {
-//                            // Handle more profiles if needed
-//                        }
-//                    }
-//                    count++
-//                }
-//                aiSelector()
+                aiSelector()
             },
             onError = { e ->
                 Log.e("Rafiur33>>", "Error fetching AI profiles: ${e.message}")
@@ -326,38 +270,20 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
     }
 
     private fun aiSelector(
-        selectedProfile: TextView? = null,
         selectedAiProfile: Models.AiProfile? = null
     ) {
-        mDatabind.itemAiProfile1.txtAi1.setBackgroundColor(resources.getColor(com.hope.resources.R.color.orange))
-        mDatabind.itemAiProfile2.txtAi1.setBackgroundColor(resources.getColor(com.hope.resources.R.color.orange))
-        mDatabind.itemAiProfile3.txtAi1.setBackgroundColor(resources.getColor(com.hope.resources.R.color.orange))
+
         mDatabind.chattingHeader.root.visibility = View.GONE
         mDatabind.aiProfiles.visibility = View.VISIBLE
-        if (selectedProfile != null) {
-            if (selectedProfile.isSelected) {
-                mDatabind.itemAiProfile1.txtAi1.isSelected = false
-                mDatabind.itemAiProfile2.txtAi1.isSelected = false
-                mDatabind.itemAiProfile3.txtAi1.isSelected = false
-                aiSelector()
-                return
-            }
-
-            mDatabind.itemAiProfile1.txtAi1.isSelected = false
-            mDatabind.itemAiProfile2.txtAi1.isSelected = false
-            mDatabind.itemAiProfile3.txtAi1.isSelected = false
-            selectedProfile?.isSelected = true
-            selectedProfile?.setBackgroundColor(resources.getColor(com.hope.resources.R.color.green))
-
-        } else {
-            mDatabind.itemAiProfile1.txtAi1.isSelected = false
-            mDatabind.itemAiProfile2.txtAi1.isSelected = false
-            mDatabind.itemAiProfile3.txtAi1.isSelected = false
+        Log.d("Rafiur33>>", "Selected AI Profile: $selectedAiProfile")
+        if(selectedAiProfile == null){
+            Log.d("Rafiur33>>", "Selected AI Profile: null")
+            adapter.setDefaultAI()
+            return
         }
-
         if (selectedAiProfile != null) {
             mDatabind.chattingHeader.root.visibility = View.VISIBLE
-//            mDatabind.aiProfiles.visibility = View.GONE
+            mDatabind.aiProfiles.visibility = View.GONE
             selectedAiProfile?.imageUrl?.let {
                 GlideEngine.createGlideEngine().loadImage(
                     this, it,
@@ -389,7 +315,7 @@ class MainActivity : BaseVmDbActivity<MainViewModel, LayoutMainactivityBinding>(
         mDatabind.chattingHeader.btnGallery.setOnClickListener {
             mDatabind.viewPager.currentItem = 1
         }
-//        selectedAiProfile = aiProfile
+
         for (fragment in viewPagerAdapter.getAllFragments()) {
             if (fragment is MainFragment) {
                 fragment.setAiProfile(selectedAiProfile)
